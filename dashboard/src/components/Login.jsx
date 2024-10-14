@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://core1.nodadogenhospital.com/api/v1/user/login",
+        "https://core1.nodadogenhospital.com/api/v1/user/login",
         { email, password, confirmPassword, role: "Admin" },
         {
           withCredentials: true,
