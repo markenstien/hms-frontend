@@ -21,9 +21,6 @@ const BigDataChart = ({ totalInpatients, totalOutpatients, totalDoctors }) => {
   const options = {
     responsive: true,
     plugins: {
-      legend: {
-        position: 'top',
-      },
       title: {
         display: true,
         text: 'Nodado General Hospital',
