@@ -574,7 +574,7 @@ body {
 
 .profile-picture-container {
   display: flex;
-  flex-direction: column; /* Stack image and button vertically */
+ 
   align-items: center; /* Center items */
 }
 
@@ -596,7 +596,15 @@ body {
   border-radius: 5px; /* Add slight rounding for aesthetics hahaha */
   background: #ffffff00; /* Match background color */
   color: rgb(105, 104, 104); /* text color for visibility */
+  margin-top: 220px;
 
+}
+
+@media (max-width: 896px) {
+  .upload-button {
+    margin-top: 0px;
+  }
+  
 }
 
 
