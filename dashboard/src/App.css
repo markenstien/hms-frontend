@@ -708,9 +708,9 @@ input[type="time"]:before {
 
 .patients .banner {
   display: flex;
-  flex-wrap: wrap; /* Allows cards to wrap to the next line */
-  justify-content: space-between; /* Space out the cards */
-  gap: 20px; /* Adds space between the cards */
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 20px;
 }
 
 .patients h1, .archive h1{
@@ -736,19 +736,19 @@ input[type="time"]:before {
 
 .archive .banner {
   display: flex;
-  flex-wrap: wrap; /* Allows cards to wrap to the next line */
-  justify-content: space-between; /* Space out the cards */
-  gap: 20px; /* Adds space between the cards */
+  flex-wrap: wrap; /* allow cards to wrap to the next line */
+  justify-content: space-evenly; /* Space evenly - for equal spacing yes */
+  gap: 20px; /* space between the cards */
 }
 
 /*------------- BigDataChart--------------------*/
 
 .chart-container {
-  width: 100%; /* Full width */
-  max-width: 800px; /* Limit max width */
-  margin: 0 auto; /* Center horizontally */
-  padding: 20px; /* Add some padding */
-  background-color: #f9f9f9; /* Light background color */
+  width: 100%; /* full width */
+  max-width: 800px; /* limit max width */
+  margin: 0 auto; /* center horizontally */
+  padding: 20px; /* add some padding */
+  background-color: #f9f9f9; /* light background color */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
