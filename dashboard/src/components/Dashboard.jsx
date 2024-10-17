@@ -108,7 +108,6 @@ const Dashboard = () => {
         <BigDataChart
           totalInpatients={totalInpatients}
           totalOutpatients={totalOutpatients}
-          totalBedCapacity={totalBedCapacity}
           availableBeds={availableBeds}
           totalDoctors={totalDoctors}
         />

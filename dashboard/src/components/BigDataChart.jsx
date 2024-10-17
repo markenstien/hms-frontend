@@ -22,7 +22,7 @@ ChartJS.register(
 const BigDataChart = ({
   totalInpatients,
   totalOutpatients,
-  totalBedCapacity,
+
   availableBeds,
   totalDoctors,
 }) => {
@@ -30,7 +30,7 @@ const BigDataChart = ({
     labels: [
       "Inpatients",
       "Outpatients",
-      "BedCapacity",
+   
       "AvailableBeds",
       "Doctors",
     ],
@@ -40,7 +40,7 @@ const BigDataChart = ({
         data: [
           totalInpatients,
           totalOutpatients,
-          totalBedCapacity,
+  
           availableBeds,
           totalDoctors,
         ],
