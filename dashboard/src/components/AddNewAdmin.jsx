@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { Context } from '../main';
-import { useNavigate, Navigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import React, { useContext, useState } from "react";
+import { Context } from "../main";
+import { useNavigate, Navigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddNewAdmin = () => {
   // Accessing authentication context to check if the user is logged in
@@ -27,33 +27,33 @@ const AddNewAdmin = () => {
       // Sending a POST request to the server to add a new admin
       const response = await axios.post(
         "http://localhost:4000/api/v1/user/admin/addnew",
-        { 
-          firstName, 
-          lastName, 
-          email, 
-          phone, 
-          philsysornic, 
-          dob, 
-          gender, 
-          password, 
-          role: "Admin" 
+        {
+          firstName,
+          lastName,
+          email,
+          phone,
+          philsysornic,
+          dob,
+          gender,
+          password,
+          role: "Admin",
         },
         {
-          withCredentials: true, // Include credentials in the request
-          headers: { "Content-Type": "application/json" }, // Set content type
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
         }
       );
-      // Show success message upon successful addition
+     
       toast.success(response.data.message);
-      setIsAuthenticated(true); // Update authentication state
-      navigateTo("/"); // Navigate to home after successful admin addition
+      setIsAuthenticated(true);
+      navigateTo("/");
     } catch (error) {
-      // Show error message if something goes wrong
+      
       toast.error(error.response?.data?.message || "Something went wrong!");
     }
   };
 
-  // Redirect to the login page if the user is not authenticated
+
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
   }
@@ -71,13 +71,13 @@ const AddNewAdmin = () => {
                 type="text"
                 placeholder="First Name"
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)} // Update state on input change
+                onChange={(e) => setFirstName(e.target.value)}
               />
               <input
                 type="text"
                 placeholder="Last Name"
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)} // Update state on input change
+                onChange={(e) => setLastName(e.target.value)}
               />
             </div>
             <div>
@@ -85,13 +85,13 @@ const AddNewAdmin = () => {
                 type="text"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)} // Update state on input change
+                onChange={(e) => setEmail(e.target.value)}
               />
               <input
                 type="number"
                 placeholder="Phone Number"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)} // Update state on input change
+                onChange={(e) => setPhone(e.target.value)}
               />
             </div>
             <div>
@@ -99,17 +99,20 @@ const AddNewAdmin = () => {
                 type="number"
                 placeholder="PhilSys or NIC"
                 value={philsysornic}
-                onChange={(e) => setPhilsysornic(e.target.value)} // Update state on input change
+                onChange={(e) => setPhilsysornic(e.target.value)}
               />
               <input
                 type="date"
                 placeholder="Date of Birth"
                 value={dob}
-                onChange={(e) => setDob(e.target.value)} // Update state on input change
+                onChange={(e) => setDob(e.target.value)}
               />
             </div>
             <div>
-              <select value={gender} onChange={(e) => setGender(e.target.value)}>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -118,12 +121,19 @@ const AddNewAdmin = () => {
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)} // Update state on input change
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
-            <div style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>
-              <button type="submit">Add New Admin</button> {/* Submit button for the form */}
+            <div
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <button type="submit">Add New Admin</button>{" "}
+              {/* Submit button for the form */}
             </div>
           </form>
         </div>

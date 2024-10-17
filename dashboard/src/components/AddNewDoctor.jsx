@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { Context } from '../main';
-import { useNavigate, Navigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import React, { useContext, useState } from "react";
+import { Context } from "../main";
+import { useNavigate, Navigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddNewDoctor = () => {
   const { isAuthenticated } = useContext(Context);
@@ -27,7 +27,7 @@ const AddNewDoctor = () => {
     "Neurology",
     "Orthopedics",
     "Radiology",
-    "ENT"
+    "ENT",
   ];
 
   const navigateTo = useNavigate();
@@ -69,7 +69,7 @@ const AddNewDoctor = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      
+
       toast.success(response.data.message); // show success message
       navigateTo("/"); // go to home page
     } catch (error) {
@@ -93,7 +93,11 @@ const AddNewDoctor = () => {
           <div className="first-wrapper">
             <div className="profile-picture-container">
               <img
-                src={docAvatarPreview ? `${docAvatarPreview}` : "/noAvatarHolder.jpg"}
+                src={
+                  docAvatarPreview
+                    ? `${docAvatarPreview}`
+                    : "/noAvatarHolder.jpg"
+                }
                 alt="Doctor's Avatar"
                 className="profile-picture"
               />
@@ -163,7 +167,9 @@ const AddNewDoctor = () => {
               </option>
             ))}
           </select>
-          <button type="submit" disabled={loading}>Add New Doctor</button>
+          <button type="submit" disabled={loading}>
+            Add New Doctor
+          </button>
         </form>
       </div>
     </section>

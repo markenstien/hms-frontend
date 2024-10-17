@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Context } from '../main';
+import React, { useContext, useState, useEffect } from "react";
+import { Context } from "../main";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 
 const departmentChoices = [
   "Cardiology",
@@ -11,8 +11,7 @@ const departmentChoices = [
   "Neurology",
   "Orthopedics",
   "Radiology",
-  "ENT"
- 
+  "ENT",
 ];
 
 const Doctors = () => {
@@ -28,7 +27,10 @@ const Doctors = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const { data } = await axios.get("http://localhost:4000/api/v1/user/doctors", { withCredentials: true });
+        const { data } = await axios.get(
+          "http://localhost:4000/api/v1/user/doctors",
+          { withCredentials: true }
+        );
         setDoctors(data.doctors);
       } catch (error) {
         toast.error(error.response?.data?.message || "Failed to fetch doctors");
@@ -71,18 +73,24 @@ const Doctors = () => {
 
     // pang debug: check contents of formData
     for (let pair of formData.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
+      console.log(pair[0] + ", " + pair[1]);
     }
 
     try {
-      const { data } = await axios.put(`http://localhost:4000/api/v1/user/doctors/${editingDoctor._id}`, formData, { 
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const { data } = await axios.put(
+        `http://localhost:4000/api/v1/user/doctors/${editingDoctor._id}`,
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       toast.success("Doctor updated successfully!");
-      setDoctors(doctors.map(doc => doc._id === data.doctor._id ? data.doctor : doc));
+      setDoctors(
+        doctors.map((doc) => (doc._id === data.doctor._id ? data.doctor : doc))
+      );
       closePopup();
     } catch (error) {
       console.log(error);
@@ -92,9 +100,12 @@ const Doctors = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:4000/api/v1/user/doctors/${editingDoctor._id}`, { withCredentials: true });
+      await axios.delete(
+        `http://localhost:4000/api/v1/user/doctors/${editingDoctor._id}`,
+        { withCredentials: true }
+      );
       toast.success("Doctor deleted successfully!");
-      setDoctors(doctors.filter(doc => doc._id !== editingDoctor._id));
+      setDoctors(doctors.filter((doc) => doc._id !== editingDoctor._id));
       closePopup();
       setIsDeleteConfirmOpen(false); // close the confirmation modal
     } catch (error) {
@@ -122,16 +133,36 @@ const Doctors = () => {
           {doctors && doctors.length > 0 ? (
             doctors.map((element) => (
               <div className="card" key={element._id}>
-                <img src={element.docAvatar && element.docAvatar.url} alt="Doctor's Avatar" />
+                <img
+                  src={element.docAvatar && element.docAvatar.url}
+                  alt="Doctor's Avatar"
+                />
                 <h4>{`${element.firstName} ${element.lastName}`}</h4>
                 <div className="details">
-                  <p>Email: <span>{element.email}</span></p>
-                  <p>Phone: <span>{element.phone}</span></p>
-                  <p>Birth: <span>{element.dob.substring(0, 10)}</span></p>
-                  <p>Department: <span>{element.doctorDepartment}</span></p>
-                  <p>PhilSys or NIC: <span>{element.philsysornic}</span></p>
-                  <p>Gender: <span>{element.gender}</span></p>
-                  <button className="update-btn" onClick={() => openPopup(element)}>Update</button>
+                  <p>
+                    Email: <span>{element.email}</span>
+                  </p>
+                  <p>
+                    Phone: <span>{element.phone}</span>
+                  </p>
+                  <p>
+                    Birth: <span>{element.dob.substring(0, 10)}</span>
+                  </p>
+                  <p>
+                    Department: <span>{element.doctorDepartment}</span>
+                  </p>
+                  <p>
+                    PhilSys or NIC: <span>{element.philsysornic}</span>
+                  </p>
+                  <p>
+                    Gender: <span>{element.gender}</span>
+                  </p>
+                  <button
+                    className="update-btn"
+                    onClick={() => openPopup(element)}
+                  >
+                    Update
+                  </button>
                 </div>
               </div>
             ))
@@ -185,14 +216,22 @@ const Doctors = () => {
                 onChange={handleChange}
               >
                 {departmentChoices.map((dept, index) => (
-                  <option key={index} value={dept}>{dept}</option>
+                  <option key={index} value={dept}>
+                    {dept}
+                  </option>
                 ))}
               </select>
 
               <div className="popup-actions">
-                <button className="save-btn" onClick={handleUpdate}>Save Changes</button>
-                <button className="cancel-btn" onClick={closePopup}>Cancel</button>
-                <button className="delete-btn" onClick={openDeleteConfirm}>Delete Doctor</button>
+                <button className="save-btn" onClick={handleUpdate}>
+                  Save Changes
+                </button>
+                <button className="cancel-btn" onClick={closePopup}>
+                  Cancel
+                </button>
+                <button className="delete-btn" onClick={openDeleteConfirm}>
+                  Delete Doctor
+                </button>
               </div>
             </div>
           </div>
@@ -204,8 +243,12 @@ const Doctors = () => {
             <div className="modal-content-confirmation">
               <h2>Are you sure you want to delete this doctor?</h2>
               <div className="popup-actions">
-                <button className="delete-btn" onClick={handleDelete}>Yes, Delete</button>
-                <button className="cancel-btn" onClick={closeDeleteConfirm}>Cancel</button>
+                <button className="delete-btn" onClick={handleDelete}>
+                  Yes, Delete
+                </button>
+                <button className="cancel-btn" onClick={closeDeleteConfirm}>
+                  Cancel
+                </button>
               </div>
             </div>
           </div>

@@ -47,7 +47,7 @@ body {
 .logo {
   width: 10%;
 }
-.form-title{
+.form-title {
   font-size: 25px;
   color: #408026;
   margin-bottom: 30px;
@@ -82,7 +82,7 @@ body {
 .form-component form {
   display: flex;
   flex-direction: column;
- 
+
   width: 550px;
 }
 .add-admin-form form {
@@ -224,7 +224,7 @@ body {
 }
 .dashboard .banner:first-child .secondBox p,
 .dashboard .banner:first-child .thirdBox p,
-.dashboard .banner:first-child .fourthBox p{
+.dashboard .banner:first-child .fourthBox p {
   font-size: 24px;
   font-weight: 600;
 }
@@ -259,15 +259,15 @@ body {
   font-weight: 600;
 }
 
-.dashboard table td svg{
+.dashboard table td svg {
   display: flex;
   margin: 0 auto;
 }
-.dashboard table td .green{
+.dashboard table td .green {
   font-size: 20px;
   color: #16a34a;
 }
-.dashboard table td .red{
+.dashboard table td .red {
   font-size: 20px;
   color: #dc2626;
 }
@@ -296,7 +296,7 @@ body {
 
 @media (max-width: 1475px) {
   .dashboard .banner:first-child .fourthBox p,
-  .dashboard .banner:first-child .fourthBox h3{
+  .dashboard .banner:first-child .fourthBox h3 {
     font-size: 18px;
   }
 }
@@ -314,12 +314,11 @@ body {
   .dashboard .banner:first-child .secondBox h3,
   .dashboard .banner:first-child .thirdBox h3,
   .dashboard .banner:first-child .fourthBox p,
-  .dashboard .banner:first-child .fourthBox h3{
+  .dashboard .banner:first-child .fourthBox h3 {
     font-size: 18px;
   }
 }
 @media (max-width: 1020px) {
-
   .dashboard {
     height: fit-content;
   }
@@ -433,15 +432,12 @@ body {
   .sidebar .links {
     gap: 20px;
   }
-    
 }
 @media (max-width: 700px) {
   .sidebar .links {
     gap: 20px;
   }
 }
-
-
 
 @media (max-width: 485px) {
   .sidebar .links {
@@ -455,11 +451,10 @@ body {
   }
 }
 
-
 /*---------DOCTORS PAGE--------------*/
 
 .doctors h1 {
-  text-align:center;
+  text-align: center;
   color: #429762f2;
   margin-bottom: 30px;
   font-size: 2.3rem;
@@ -467,10 +462,12 @@ body {
 
 .doctors .banner {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust minimum size */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Adjust minimum size */
   grid-gap: 15px; /* Reduce the gap between cards */
 }
-
 
 .doctors .banner .card {
   background: #fff;
@@ -510,8 +507,6 @@ body {
 .doctors .banner .card div p span {
   font-weight: 400; /* Make secondary information lighter */
 }
-
-
 
 @media (max-width: 350px) {
   .doctors .banner {
@@ -576,7 +571,7 @@ body {
 
 .profile-picture-container {
   display: flex;
- 
+
   align-items: center; /* Center items */
 }
 
@@ -584,10 +579,9 @@ body {
   width: 300px;
   height: 300px;
   object-fit: cover; /* pang crop ng image */
- 
+
   margin-bottom: 10px; /* Space between image and button */
 }
-
 
 .upload-button {
   width: 70%;
@@ -599,23 +593,19 @@ body {
   background: #ffffff00; /* Match background color */
   color: rgb(105, 104, 104); /* text color for visibility */
   margin-top: 220px;
-
 }
 
 @media (max-width: 896px) {
   .upload-button {
     margin-top: 0px;
   }
-  
 }
-
 
 .add-doctor-form form .first-wrapper div:first-child img {
   width: 100%;
   height: 515px;
   margin-bottom: 20px;
 }
-
 
 .add-doctor-form
   form
@@ -660,8 +650,6 @@ body {
   }
 }
 
-
-
 input[type="date"]:before {
   content: attr(placeholder);
   color: #444;
@@ -691,15 +679,14 @@ input[type="time"]:before {
   width: 30px; /* Size of the checkbox */
   height: 30px; /* Size of the checkbox */
   cursor: pointer;
-  accent-color: #4CAF50;
+  accent-color: #4caf50;
 }
 
 /* Optional: Style for the checkbox when checked */
 .checkbox-input:checked {
-  background-color: #4CAF50; /* Background color when checked */
-  border: 2px solid #4CAF50; /* Border color when checked */
+  background-color: #4caf50; /* Background color when checked */
+  border: 2px solid #4caf50; /* Border color when checked */
 }
-
 
 /* for PATIENTS PAGE */
 .patients .banner .card {
@@ -723,8 +710,9 @@ input[type="time"]:before {
   gap: 20px;
 }
 
-.patients h1, .archive h1{
-  text-align:center;
+.patients h1,
+.archive h1 {
+  text-align: center;
   color: #408026;
 }
 
@@ -762,10 +750,6 @@ input[type="time"]:before {
   padding: 10px; /* Optional: Add some padding */
 }
 
-
-
-
-
 @media (max-width: 768px) {
   .chart-container {
     padding: 10px;
@@ -775,7 +759,6 @@ input[type="time"]:before {
     font-size: 1.2rem;
   }
 }
-
 
 /* General styles */
 .page.patients {
@@ -821,7 +804,7 @@ input[type="time"]:before {
   border: 1px solid #888;
   width: 80%;
   border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   max-height: 80vh;
 }
 
@@ -835,8 +818,8 @@ label {
   margin: 10px 0 5px;
 }
 
-
-input, select {
+input,
+select {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -845,7 +828,10 @@ input, select {
 }
 
 /* Styles for buttons */
-.update-btn, .discharge-btn, .save-btn, .cancel-btn {
+.update-btn,
+.discharge-btn,
+.save-btn,
+.cancel-btn {
   margin-top: 10px;
   padding: 10px;
   border: none;
@@ -874,7 +860,6 @@ input, select {
   color: white;
 }
 
-
 /*DOCTORS UPDATE*/
 
 .delete-btn {
@@ -885,7 +870,6 @@ input, select {
   border-radius: 4px;
   cursor: pointer;
   background-color: rgb(207, 50, 50);
-  
 }
 
 .modal-overlay-confirmation {
@@ -919,7 +903,6 @@ input, select {
   font-size: 1.5rem;
 }
 
-
 @media (max-width: 768px) {
   .modal-content-confirmation {
     width: 80%;
@@ -941,7 +924,4 @@ input, select {
   }
 }
 
-
-
 /*N*/
-

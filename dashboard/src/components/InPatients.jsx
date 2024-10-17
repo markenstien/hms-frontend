@@ -94,7 +94,6 @@ const InPatients = () => {
         `http://localhost:4000/api/v1/inpatients/update/${formData.patientId}`,
         formData,
         { withCredentials: true }
-        
       );
       toast.success(response.data.message); // Show success message
       setInPatients((prev) =>

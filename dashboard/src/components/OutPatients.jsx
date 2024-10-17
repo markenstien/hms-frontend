@@ -69,53 +69,52 @@ const OutPatients = () => {
     setShowModal(true);
   };
 
- // function to handle form submission for updating outpatient data
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await axios.put(
-      `http://localhost:4000/api/v1/outpatients/update/${formData.patientId}`,
-      formData,
-      { withCredentials: true }
-    );
+  // function to handle form submission for updating outpatient data
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:4000/api/v1/outpatients/update/${formData.patientId}`,
+        formData,
+        { withCredentials: true }
+      );
 
-    toast.success(response.data.message); // Show success toast
+      toast.success(response.data.message); // Show success toast
 
-    // update the state with the updated outpatient
-    setOutPatients((prev) =>
-      prev.map((outpatient) =>
-        outpatient.patientId === formData.patientId ? formData : outpatient
-      )
-    );
+      // update the state with the updated outpatient
+      setOutPatients((prev) =>
+        prev.map((outpatient) =>
+          outpatient.patientId === formData.patientId ? formData : outpatient
+        )
+      );
 
-    setShowModal(false);
-    setFormData({ insuranceInformation: {} });
-  } catch (error) {
-    toast.error(
-      error.response?.data?.message || "Failed to update outpatient data"
-    );
-  }
-};
+      setShowModal(false);
+      setFormData({ insuranceInformation: {} });
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to update outpatient data"
+      );
+    }
+  };
 
-
- // function to archive an outpatient
- const archiveOutpatient = async (patientId) => {
-  try {
-    const response = await axios.post(
-      `http://localhost:4000/api/v1/outpatients/archive/${patientId}`,
-      {},
-      { withCredentials: true }
-    );
-    toast.success(response.data.message); // show success toast
-    setOutPatients((prev) =>
-      prev.filter((outpatient) => outpatient.patientId !== patientId)
-    );
-  } catch (error) {
-    toast.error(
-      error.response?.data?.message || "Failed to archive outpatient"
-    );
-  }
-};
+  // function to archive an outpatient
+  const archiveOutpatient = async (patientId) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/api/v1/outpatients/archive/${patientId}`,
+        {},
+        { withCredentials: true }
+      );
+      toast.success(response.data.message); // show success toast
+      setOutPatients((prev) =>
+        prev.filter((outpatient) => outpatient.patientId !== patientId)
+      );
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to archive outpatient"
+      );
+    }
+  };
 
   return (
     <>
@@ -386,7 +385,6 @@ const OutPatients = () => {
             </div>
           </div>
         )}
-        
       </section>
     </>
   );

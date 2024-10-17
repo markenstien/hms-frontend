@@ -1,22 +1,27 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Context } from '../main';
+import React, { useContext, useState, useEffect } from "react";
+import { Context } from "../main";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 
 const PatientsArchive = () => {
   const [archivedPatients, setArchivedPatients] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const { isAuthenticated } = useContext(Context);
 
   // Fetch archived patients from the API
   useEffect(() => {
     const fetchArchivedPatients = async () => {
       try {
-        const { data } = await axios.get("http://localhost:4000/api/v1/archivedPatients", { withCredentials: true });
+        const { data } = await axios.get(
+          "http://localhost:4000/api/v1/archivedPatients",
+          { withCredentials: true }
+        );
         setArchivedPatients(data.archivedPatients); // Set archived patients in state
       } catch (error) {
-        toast.error(error.response?.data?.message || "Failed to fetch archived patients"); // Show error message
+        toast.error(
+          error.response?.data?.message || "Failed to fetch archived patients"
+        ); // Show error message
       }
     };
 
@@ -55,13 +60,13 @@ const PatientsArchive = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="search-box"
           style={{
-            padding: '8px',
+            padding: "8px",
             marginTop: `20px`,
-            marginBottom: '20px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            width: '100%',
-            maxWidth: '400px',
+            marginBottom: "20px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+            width: "100%",
+            maxWidth: "400px",
           }}
         />
 
@@ -71,18 +76,51 @@ const PatientsArchive = () => {
               <div className="card" key={patient._id}>
                 <h4>{`${patient.firstName} ${patient.lastName}`}</h4>
                 <div className="details">
-                  <p>Date of Birth: <span>{patient.dob.substring(0, 10)}</span></p>
-                  <p>Age: <span>{calculateAge(patient.dob)}</span></p> {/* Display computed age */}
-                  <p>Gender: <span>{patient.gender}</span></p>
-                  <p>Mobile: <span>{patient.mobile}</span></p>
-                  <p>Landline: <span>{patient.landline || "N/A"}</span></p>
-                  <p>Email: <span>{patient.email || "N/A"}</span></p>
-                  <p>Address: <span>{patient.address}</span></p>
-                  <p>Primary Health Concern: <span>{patient.primaryHealthConcern}</span></p>
-                  <p>Medical History: <span>{patient.medicalHistory || "N/A"}</span></p>
-                  <p>Current Medications: <span>{patient.currentMedications || "N/A"}</span></p>
-                  <p>Discharge Date: <span>{patient.dischargeDate ? new Date(patient.dischargeDate).toLocaleDateString() : "N/A"}</span></p>
-                  <p>Status: <span>{patient.status}</span></p>
+                  <p>
+                    Date of Birth: <span>{patient.dob.substring(0, 10)}</span>
+                  </p>
+                  <p>
+                    Age: <span>{calculateAge(patient.dob)}</span>
+                  </p>{" "}
+                  {/* Display computed age */}
+                  <p>
+                    Gender: <span>{patient.gender}</span>
+                  </p>
+                  <p>
+                    Mobile: <span>{patient.mobile}</span>
+                  </p>
+                  <p>
+                    Landline: <span>{patient.landline || "N/A"}</span>
+                  </p>
+                  <p>
+                    Email: <span>{patient.email || "N/A"}</span>
+                  </p>
+                  <p>
+                    Address: <span>{patient.address}</span>
+                  </p>
+                  <p>
+                    Primary Health Concern:{" "}
+                    <span>{patient.primaryHealthConcern}</span>
+                  </p>
+                  <p>
+                    Medical History:{" "}
+                    <span>{patient.medicalHistory || "N/A"}</span>
+                  </p>
+                  <p>
+                    Current Medications:{" "}
+                    <span>{patient.currentMedications || "N/A"}</span>
+                  </p>
+                  <p>
+                    Discharge Date:{" "}
+                    <span>
+                      {patient.dischargeDate
+                        ? new Date(patient.dischargeDate).toLocaleDateString()
+                        : "N/A"}
+                    </span>
+                  </p>
+                  <p>
+                    Status: <span>{patient.status}</span>
+                  </p>
                 </div>
               </div>
             ))

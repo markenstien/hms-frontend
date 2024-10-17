@@ -1,42 +1,42 @@
-import React, { useContext, useState } from 'react';
-import { Context } from '../main';
-import { useNavigate, Navigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import React, { useContext, useState } from "react";
+import { Context } from "../main";
+import { useNavigate, Navigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddNewInpatient = () => {
   const { isAuthenticated } = useContext(Context);
   const navigateTo = useNavigate();
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    dob: '',
-    gender: 'Male',
-    mobile: '',
-    landline: '',
-    email: '',
-    address: '',
-    primaryHealthConcern: '',
-    medicalHistory: '',
-    currentMedications: '',
-    familyMedicalHistory: '',
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    dob: "",
+    gender: "",
+    mobile: "",
+    landline: "",
+    email: "",
+    address: "",
+    primaryHealthConcern: "",
+    medicalHistory: "",
+    currentMedications: "",
+    familyMedicalHistory: "",
     insuranceInformation: {
-      provider: '',
-      policyNumber: '',
+      provider: "",
+      policyNumber: "",
     },
-    admissionDate: '',
-    wardRoomPreference: '',
-    expectedLengthOfStay: '',
+    admissionDate: "",
+    wardRoomPreference: "",
+    expectedLengthOfStay: "",
     emergencyContact: {
-      name: '',
-      relationship: '',
-      contactNumber: '',
+      name: "",
+      relationship: "",
+      contactNumber: "",
     },
     guardianDetails: {
-      name: '',
-      relationship: '',
+      name: "",
+      relationship: "",
     },
   });
 
@@ -44,8 +44,8 @@ const AddNewInpatient = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.includes('.')) {
-      const [parent, child] = name.split('.');
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
       setFormData((prevData) => ({
         ...prevData,
         [parent]: {
@@ -66,12 +66,12 @@ const AddNewInpatient = () => {
     setIsSubmitting(true);
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/v1/inpatients/add',
+        "http://localhost:4000/api/v1/inpatients/add",
         formData,
         { withCredentials: true }
       );
       toast.success(response.data.message);
-      navigateTo('/');
+      navigateTo("/");
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
@@ -128,7 +128,6 @@ const AddNewInpatient = () => {
               onChange={handleChange}
               required
             >
-              
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
@@ -277,7 +276,7 @@ const AddNewInpatient = () => {
             />
 
             <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Adding...' : 'Add Inpatient'}
+              {isSubmitting ? "Adding..." : "Add Inpatient"}
             </button>
           </form>
         </div>
