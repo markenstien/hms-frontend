@@ -231,7 +231,7 @@ body {
 .dashboard .banner:first-child .secondBox h3,
 .dashboard .banner:first-child .thirdBox h3,
 .dashboard .banner:first-child .fourthBox h3 {
-  font-size: 28px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 2px;
 }
@@ -297,7 +297,7 @@ body {
 @media (max-width: 1475px) {
   .dashboard .banner:first-child .fourthBox p,
   .dashboard .banner:first-child .fourthBox h3{
-    font-size: 23px;
+    font-size: 18px;
   }
 }
 
@@ -315,7 +315,7 @@ body {
   .dashboard .banner:first-child .thirdBox h3,
   .dashboard .banner:first-child .fourthBox p,
   .dashboard .banner:first-child .fourthBox h3{
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 @media (max-width: 1020px) {
@@ -432,6 +432,8 @@ body {
 @media (max-width: 1180px) {
   .sidebar .links {
     gap: 20px;
+  }
+    
 }
 @media (max-width: 700px) {
   .sidebar .links {
@@ -440,7 +442,7 @@ body {
 }
 
 
-}
+
 @media (max-width: 485px) {
   .sidebar .links {
     gap: 25px;
@@ -752,21 +754,16 @@ input[type="time"]:before {
 /*------------- BigDataChart--------------------*/
 
 .chart-container {
-  width: 100%; /* full width */
-  max-width: 800px; /* limit max width */
-  margin: 0 auto; /* center horizontally */
-  padding: 20px; /* add some padding */
-  background-color: #f9f9f9; /* light background color */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the chart horizontally */
+  justify-content: center; /* Centers the chart vertically if needed */
+  width: 100%; /* Adjust width if necessary */
+  padding: 10px; /* Optional: Add some padding */
 }
 
-.chart-title {
-  text-align: center; /* Center title */
-  font-size: 1.5rem; /* Larger font size */
-  margin-bottom: 20px; /* Space below the title */
-  color: #333; 
-}
+
+
 
 
 @media (max-width: 768px) {
@@ -943,3 +940,8 @@ input, select {
     font-size: 1rem;
   }
 }
+
+
+
+/*N*/
+
