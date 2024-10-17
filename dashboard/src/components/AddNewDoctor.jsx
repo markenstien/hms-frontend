@@ -18,19 +18,16 @@ const AddNewDoctor = () => {
   const [doctorDepartment, setDoctorDepartment] = useState("");
   const [docAvatar, setDocAvatar] = useState("");
   const [docAvatarPreview, setDocAvatarPreview] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); // loading state
 
   const departmentsArray = [
     "Cardiology",
+    "Dermatology",
+    "Pediatrics",
     "Neurology",
-    "Oncology",
-    "ENT",
-    "example1",
-    "example2",
-    "example3",
-    "example4",
-    "example5",
-    "example6",
+    "Orthopedics",
+    "Radiology",
+    "ENT"
   ];
 
   const navigateTo = useNavigate();
@@ -47,9 +44,9 @@ const AddNewDoctor = () => {
 
   const handleAddNewDoctor = async (e) => {
     e.preventDefault();
-    if (loading) return; // Prevent further submissions
+    if (loading) return; // prevent further submissions. Because I have a doubleclicking mouse problem
 
-    setLoading(true); // Set loading to true
+    setLoading(true); // set loading to true
 
     try {
       const formData = new FormData();
@@ -73,12 +70,12 @@ const AddNewDoctor = () => {
         }
       );
       
-      toast.success(response.data.message); // Show success message
-      navigateTo("/"); // Go to home page
+      toast.success(response.data.message); // show success message
+      navigateTo("/"); // go to home page
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong!");
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false); // reset loading state
     }
   };
 

@@ -94,6 +94,7 @@ const InPatients = () => {
         `http://localhost:4000/api/v1/inpatients/update/${formData.patientId}`,
         formData,
         { withCredentials: true }
+        
       );
       toast.success(response.data.message); // Show success message
       setInPatients((prev) =>
@@ -105,7 +106,7 @@ const InPatients = () => {
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to update inpatient"
-      ); // Show error message
+      ); // show error message
     }
   };
 
@@ -236,7 +237,6 @@ const InPatients = () => {
           )}
         </div>
 
-        {/* Modal for Updating Inpatient Data */}
         {/* Modal for Updating Inpatient Data */}
         {showModal && (
           <div className="modal-overlay">
