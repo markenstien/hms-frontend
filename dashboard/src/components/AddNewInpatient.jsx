@@ -40,6 +40,8 @@ const AddNewInpatient = () => {
     },
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name.includes('.')) {
@@ -61,6 +63,7 @@ const AddNewInpatient = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await axios.post(
         'http://localhost:4000/api/v1/inpatients/add',
@@ -68,14 +71,16 @@ const AddNewInpatient = () => {
         { withCredentials: true }
       );
       toast.success(response.data.message);
-      navigateTo('/'); // Redirect after successful submission
+      navigateTo('/');
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" />; // Redirect to login if not authenticated
+    return <Navigate to="/login" />; // redirect to login if not authenticated
   }
 
   return (
@@ -123,6 +128,7 @@ const AddNewInpatient = () => {
               onChange={handleChange}
               required
             >
+              
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
@@ -227,7 +233,7 @@ const AddNewInpatient = () => {
               onChange={handleChange}
             />
 
-            {/* Emergency Contact & Guardian Detailssssss */}
+            {/* Emergency Contact & Guardian Details */}
             <h3>Emergency Contact</h3>
             <input
               type="text"
@@ -270,7 +276,9 @@ const AddNewInpatient = () => {
               onChange={handleChange}
             />
 
-            <button type="submit">Add Inpatient</button>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Adding...' : 'Add Inpatient'}
+            </button>
           </form>
         </div>
       </section>

@@ -82,7 +82,7 @@ body {
 .form-component form {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+ 
   width: 550px;
 }
 .add-admin-form form {
@@ -777,4 +777,102 @@ input[type="time"]:before {
   .chart-title {
     font-size: 1.2rem;
   }
+}
+
+
+/* General styles */
+.page.patients {
+  padding: 20px;
+}
+
+/* Styles for the search box */
+.search-box {
+  padding: 8px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Styles for the cards */
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(12, 12, 12, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+  max-height: 80vh;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #408026;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Styles for buttons */
+.update-btn, .discharge-btn, .save-btn, .cancel-btn {
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-btn {
+  background: linear-gradient(140deg, #63bd85f2, #429762f2);
+  color: white;
+}
+
+.discharge-btn {
+  background: linear-gradient(140deg, #e98690, #db5e6b);
+  color: white;
+}
+
+.save-btn {
+  background-color: #408026;
+  color: white;
+}
+
+.cancel-btn {
+  margin-left: 10px;
+  background-color: #e9910e;
+  color: white;
 }
