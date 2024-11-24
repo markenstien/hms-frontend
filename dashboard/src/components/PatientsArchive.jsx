@@ -14,7 +14,7 @@ const PatientsArchive = () => {
     const fetchArchivedPatients = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/archivedPatients",
+          "https://hmscore1-backend.vercel.app/api/v1/archivedPatients",
           { withCredentials: true }
         );
         setArchivedPatients(data.archivedPatients); // Set archived patients in state

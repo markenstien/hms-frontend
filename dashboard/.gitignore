@@ -14,12 +14,11 @@ logs/
 *.log
 
 # Environment variables
-config.env
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+#.env
+#.env.local
+#.env.development.local
+#.env.test.local
+#.env.production.local
 
 # Temporary files
 *.tmp

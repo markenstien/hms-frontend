@@ -28,7 +28,7 @@ const Doctors = () => {
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/user/doctors",
+          "https://hmscore1-backend.vercel.app/api/v1/user/doctors",
           { withCredentials: true }
         );
         setDoctors(data.doctors);
@@ -78,7 +78,7 @@ const Doctors = () => {
 
     try {
       const { data } = await axios.put(
-        `http://localhost:4000/api/v1/user/doctors/${editingDoctor._id}`,
+        `https://hmscore1-backend.vercel.app/api/v1/user/doctors/${editingDoctor._id}`,
         formData,
         {
           withCredentials: true,
@@ -101,7 +101,7 @@ const Doctors = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:4000/api/v1/user/doctors/${editingDoctor._id}`,
+        `https://hmscore1-backend.vercel.app/api/v1/user/doctors/${editingDoctor._id}`,
         { withCredentials: true }
       );
       toast.success("Doctor deleted successfully!");

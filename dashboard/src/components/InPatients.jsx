@@ -16,7 +16,7 @@ const InPatients = () => {
     const fetchInPatients = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/inpatients/inpatients",
+          "https://hmscore1-backend.vercel.app/api/v1/inpatients/inpatients",
           { withCredentials: true }
         );
         setInPatients(data.inpatients); // Set inpatients in state
@@ -46,7 +46,7 @@ const InPatients = () => {
   const dischargeInpatient = async (patientId) => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/v1/inpatients/discharge/${patientId}`,
+        `https://hmscore1-backend.vercel.app/api/v1/inpatients/discharge/${patientId}`,
         {},
         { withCredentials: true }
       );
@@ -91,7 +91,7 @@ const InPatients = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/v1/inpatients/update/${formData.patientId}`,
+        `https://hmscore1-backend.vercel.app/api/v1/inpatients/update/${formData.patientId}`,
         formData,
         { withCredentials: true }
       );

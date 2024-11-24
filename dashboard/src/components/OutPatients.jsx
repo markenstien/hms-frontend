@@ -16,7 +16,7 @@ const OutPatients = () => {
     const fetchOutPatients = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/outpatients/outpatients",
+          "https://hmscore1-backend.vercel.app/api/v1/outpatients/outpatients",
           { withCredentials: true }
         );
         setOutPatients(data.outpatients);
@@ -74,7 +74,7 @@ const OutPatients = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/v1/outpatients/update/${formData.patientId}`,
+        `https://hmscore1-backend.vercel.app/api/v1/outpatients/update/${formData.patientId}`,
         formData,
         { withCredentials: true }
       );
@@ -101,7 +101,7 @@ const OutPatients = () => {
   const archiveOutpatient = async (patientId) => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/v1/outpatients/archive/${patientId}`,
+        `https://hmscore1-backend.vercel.app/api/v1/outpatients/archive/${patientId}`,
         {},
         { withCredentials: true }
       );

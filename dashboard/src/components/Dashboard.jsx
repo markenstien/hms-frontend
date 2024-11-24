@@ -6,6 +6,7 @@ import { FaBedPulse, FaUserDoctor } from "react-icons/fa6";
 import { PiBedFill } from "react-icons/pi";
 import BigDataChart from "./BigDataChart";
 
+
 const Dashboard = () => {
   const { isAuthenticated, user } = useContext(Context);
   const [totalDoctors, setTotalDoctors] = useState(0);
@@ -26,13 +27,13 @@ const Dashboard = () => {
     const fetchCounts = async () => {
       try {
         const inpatientResponse = await axios.get(
-          "http://localhost:4000/api/v1/inpatients/count",
+          "https://hmscore1-backend.vercel.app/api/v1/inpatients/count",
           { withCredentials: true }
         );
         setTotalInpatients(inpatientResponse.data.count);
 
         const outpatientResponse = await axios.get(
-          "http://localhost:4000/api/v1/outpatients/count",
+          "https://hmscore1-backend.vercel.app/api/v1/outpatients/count",
           { withCredentials: true }
         );
         setTotalOutpatients(outpatientResponse.data.count);
@@ -44,7 +45,7 @@ const Dashboard = () => {
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/user/doctors",
+          "https://hmscore1-backend.vercel.app/api/v1/user/doctors",
           { withCredentials: true }
         );
         setTotalDoctors(data.doctors.length);

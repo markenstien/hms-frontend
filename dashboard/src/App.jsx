@@ -25,7 +25,7 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/user/admin/me",
+          "https://hmscore1-backend.vercel.app/api/v1/user/admin/me",
           { withCredentials: true }
         );
         setIsAuthenticated(true);

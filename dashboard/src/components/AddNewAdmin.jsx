@@ -26,7 +26,7 @@ const AddNewAdmin = () => {
     try {
       // Sending a POST request to the server to add a new admin
       const response = await axios.post(
-        "http://localhost:4000/api/v1/user/admin/addnew",
+        "https://hmscore1-backend.vercel.app/api/v1/user/admin/addnew",
         {
           firstName,
           lastName,
