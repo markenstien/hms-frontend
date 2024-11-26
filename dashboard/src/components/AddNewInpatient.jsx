@@ -66,7 +66,7 @@ const AddNewInpatient = () => {
     setIsSubmitting(true);
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/inpatients/add",
+        "https://hmscore1-backend.vercel.app/api/v1/inpatients/add",
         formData,
         { withCredentials: true }
       );

@@ -65,17 +65,26 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     await axios
-      .get("https://hmscore1-backend.vercel.app/api/v1/user/admin/logout", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        setIsAuthenticated(false);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
-  };
+        .get("https://hmscore1-backend.vercel.app/api/v1/user/admin/logout", {
+            withCredentials: true,
+        })
+        .then((res) => {
+            toast.success(res.data.message);
+            setIsAuthenticated(false);
+
+            localStorage.removeItem("adminToken");
+            localStorage.removeItem("patientToken");
+
+            document.cookie = "adminToken=; Max-Age=0; path=/";
+            window.location.href = "/login";
+        })
+        .catch((err) => {
+            toast.error(err.response?.data?.message || "Logout failed");
+        });
+};
+
+
+  
 
   // Handle tooltip position and content on hover
   const handleMouseEnter = (event, text) => {

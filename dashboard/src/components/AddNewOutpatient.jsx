@@ -40,7 +40,7 @@ const AddNewOutpatient = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/outpatients/add",
+        "https://hmscore1-backend.vercel.app/api/v1/outpatients/add",
         formData,
         { withCredentials: true }
       );

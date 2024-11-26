@@ -62,7 +62,7 @@ const AddNewDoctor = () => {
       formData.append("docAvatar", docAvatar);
 
       const response = await axios.post(
-        "http://localhost:4000/api/v1/user/doctor/addnew",
+        "https://hmscore1-backend.vercel.app/api/v1/user/doctor/addnew",
         formData,
         {
           withCredentials: true,
