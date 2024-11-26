@@ -21,24 +21,39 @@ import "./App.css";
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
 
+  const checkAuthentication = () => {
+    const token = localStorage.getItem("adminToken");
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false); 
+    }
+  };
+
   useEffect(() => {
+    // Run checkAuthentication on mount
+    checkAuthentication();
+  }, []);  // Only run once on component mount
+
+  useEffect(() => {
+    // Fetch user data only if authenticated
     const fetchUser = async () => {
       try {
         const response = await axios.get(
           "https://hmscore1-backend.vercel.app/api/v1/user/admin/me",
           { withCredentials: true }
         );
-        setIsAuthenticated(true);
         setUser(response.data.user);
       } catch (error) {
-        setIsAuthenticated(false);
-        setUser({});
+        setUser({});  // If error occurs, reset user data
       }
     };
-    fetchUser();
-  }, [isAuthenticated]);
 
-  //const availableBeds = 20;
+    if (isAuthenticated) {
+      fetchUser();
+    }
+  }, [isAuthenticated, setUser]);  // Run when isAuthenticated changes
+
   const totalBedCapacity = 50;
 
   return (
@@ -74,5 +89,3 @@ const App = () => {
 };
 
 export default App;
-
-//hello
