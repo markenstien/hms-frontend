@@ -65,24 +65,24 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      // Send logout request to the backend
       const res = await axios.get(
         "https://hmscore1-backend.vercel.app/api/v1/user/admin/logout",
         { withCredentials: true }
       );
+
       toast.success(res.data.message);
   
       localStorage.removeItem("adminToken");
-      localStorage.removeItem("patientToken");
+      
       document.cookie = "adminToken=; Max-Age=0; path=/";
   
 
-
       navigateTo("/login", { replace: true });
       setIsAuthenticated(false);
+    
     } catch (err) {
       toast.error(err.response?.data?.message || "Logout failed");
-      navigateTo("/login", { replace: true });
+
     }
   };
   

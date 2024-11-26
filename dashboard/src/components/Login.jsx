@@ -26,7 +26,6 @@ const Login = () => {
       );
       toast.success(response.data.message);
       setIsAuthenticated(true);
-      localStorage.setItem("adminToken", response.data.token);
       navigateTo("/");
     } catch (error) {
       toast.error(error.response.data.message);
