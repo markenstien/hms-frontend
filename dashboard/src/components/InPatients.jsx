@@ -47,7 +47,7 @@ const InPatients = () => {
     try {
       const response = await axios.post(
         `https://hmscore1-backend.vercel.app/api/v1/inpatients/discharge/${patientId}`,
-        {},
+        { dischargeDate: new Date().toISOString() },
         { withCredentials: true }
       );
       toast.success(response.data.message); // Show success message

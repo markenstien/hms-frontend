@@ -97,24 +97,24 @@ const OutPatients = () => {
     }
   };
 
-  // function to archive an outpatient
+ 
   const archiveOutpatient = async (patientId) => {
-    try {
-      const response = await axios.post(
-        `https://hmscore1-backend.vercel.app/api/v1/outpatients/archive/${patientId}`,
-        {},
-        { withCredentials: true }
-      );
-      toast.success(response.data.message); // show success toast
-      setOutPatients((prev) =>
-        prev.filter((outpatient) => outpatient.patientId !== patientId)
-      );
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to archive outpatient"
-      );
-    }
-  };
+  try {
+    const response = await axios.post(
+      `https://hmscore1-backend.vercel.app/api/v1/outpatients/archive/${patientId}`,
+      { dischargeDate: new Date().toISOString() },
+      { withCredentials: true }
+    );
+    toast.success(response.data.message);
+    setOutPatients((prev) =>
+      prev.filter((outpatient) => outpatient.patientId !== patientId)
+    );
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || "Failed to archive outpatient"
+    );
+  }
+};
 
   return (
     <>
