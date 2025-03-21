@@ -310,14 +310,12 @@ const AddNewInpatient = () => {
                         value={formData.currentMedications}
                         onChange={handleChange}></textarea>
                   </div>
-
                   <div>
                       <label className="block mb-1 font-medium">Medical History</label>
                       <textarea name="medicalHistory" id="" rows={3}  className="block w-full" 
                         value={formData.medicalHistory}
                         onChange={handleChange}></textarea>
                   </div>
-
                   <div>
                       <label className="block mb-1 font-medium">Family Medical History</label>
                       <textarea name="familyMedicalHistory" id="" rows={3}  className="block w-full" 
