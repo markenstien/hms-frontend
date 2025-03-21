@@ -10,13 +10,13 @@ const InPatients = () => {
   const { isAuthenticated } = useContext(Context); // Destructure isAuthenticated from Context
   const [showModal, setShowModal] = useState(false); // State to control modal visibility
   const [formData, setFormData] = useState({}); // State to store form data for editing
-
+  const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
   // Fetch inpatients from the API
   useEffect(() => {
     const fetchInPatients = async () => {
       try {
         const { data } = await axios.get(
-          "https://hmscore1-backend.vercel.app/api/v1/inpatients/inpatients",
+          `${apiBaseURL}/api/v1/inpatients/inpatients`,
           { withCredentials: true }
         );
         setInPatients(data.inpatients); // Set inpatients in state
@@ -31,9 +31,9 @@ const InPatients = () => {
   }, []); // Empty dependency array means it runs once after the component mounts
 
   // If not authenticated, redirect to login
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
+  // if (!isAuthenticated) {
+  //   return <Navigate to="/login" />;
+  // }
 
   // Filter inpatients based on the search query
   const filteredInpatients = inpatients.filter((inpatient) =>
@@ -46,7 +46,7 @@ const InPatients = () => {
   const dischargeInpatient = async (patientId) => {
     try {
       const response = await axios.post(
-        `https://hmscore1-backend.vercel.app/api/v1/inpatients/discharge/${patientId}`,
+        `${apiBaseURL}/api/v1/inpatients/discharge/${patientId}`,
         { dischargeDate: new Date().toISOString() },
         { withCredentials: true }
       );
@@ -91,7 +91,7 @@ const InPatients = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `https://hmscore1-backend.vercel.app/api/v1/inpatients/update/${formData.patientId}`,
+        `${apiBaseURL}/api/v1/inpatients/update/${formData.patientId}`,
         formData,
         { withCredentials: true }
       );
@@ -200,7 +200,11 @@ const InPatients = () => {
                   </p>
                   <p>
                     Ward/Room Preference:{" "}
-                    <span>{element.wardRoomPreference || "N/A"}</span>
+                    <span>{element.ward.roomModel || "N/A"} {element.ward.roomNumber || ""}</span>
+                  </p>
+                  <p>
+                    Attending Physician:{" "}
+                    <span>{element.physician.doctorDepartment || ""} {element.physician.name || "N/A"}</span>
                   </p>
                   <p>
                     Expected Length of Stay:{" "}

@@ -54,6 +54,11 @@ const Sidebar = () => {
     navigateTo("/inpatients");
     setShow(!show);
   };
+
+  const gotoWards = () => {
+    navigateTo("/ward/");
+    setShow(!show);
+  }
   const gotoPatientsArchive = () => {
     navigateTo("/archivedPatients");
     setShow(!show);
@@ -166,6 +171,12 @@ const Sidebar = () => {
             onMouseEnter={(e) => handleMouseEnter(e, "Inpatients")}
             onMouseLeave={handleMouseLeave}
           />
+          <FaHospital
+            onClick={gotoWards}
+            onMouseEnter={(e) => handleMouseEnter(e, "Wards")}
+            onMouseLeave={handleMouseLeave}
+          />
+
           <FaClinicMedical
             onClick={gotoOutPatients}
             onMouseEnter={(e) => handleMouseEnter(e, "Outpatients")}

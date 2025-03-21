@@ -3,10 +3,10 @@ import { Context } from "../main";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+const loginAPI = import.meta.env.REACT_APP_API_BASE_URL + '/api/v1/user/login';
 
 const AddNewDoctor = () => {
   const { isAuthenticated } = useContext(Context);
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -62,7 +62,7 @@ const AddNewDoctor = () => {
       formData.append("docAvatar", docAvatar);
 
       const response = await axios.post(
-        "https://hmscore1-backend.vercel.app/api/v1/user/doctor/addnew",
+        `${loginAPI}/api/v1/user/doctor/addnew`,
         formData,
         {
           withCredentials: true,

@@ -3,6 +3,7 @@ import { Context } from "../main";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
+const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 
 const departmentChoices = [
   "Cardiology",
@@ -28,8 +29,7 @@ const Doctors = () => {
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
-          "https://hmscore1-backend.vercel.app/api/v1/user/doctors",
-          { withCredentials: true }
+          `${apiBaseURL}/api/v1/user/doctors`,
         );
         setDoctors(data.doctors);
       } catch (error) {

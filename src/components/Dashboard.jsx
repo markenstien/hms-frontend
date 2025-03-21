@@ -13,6 +13,7 @@ const Dashboard = () => {
   const [totalInpatients, setTotalInpatients] = useState(0);
   const [totalOutpatients, setTotalOutpatients] = useState(0);
   const [randomQuote, setRandomQuote] = useState("");
+  const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 
   const totalBedCapacity = 50;
 
@@ -27,13 +28,13 @@ const Dashboard = () => {
     const fetchCounts = async () => {
       try {
         const inpatientResponse = await axios.get(
-          "https://hmscore1-backend.vercel.app/api/v1/inpatients/count",
+          `${apiBaseURL}/api/v1/inpatients/count`,
           { withCredentials: true }
         );
         setTotalInpatients(inpatientResponse.data.count);
 
         const outpatientResponse = await axios.get(
-          "https://hmscore1-backend.vercel.app/api/v1/outpatients/count",
+          `${apiBaseURL}/api/v1/outpatients/count`,
           { withCredentials: true }
         );
         setTotalOutpatients(outpatientResponse.data.count);
@@ -45,7 +46,7 @@ const Dashboard = () => {
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
-          "https://hmscore1-backend.vercel.app/api/v1/user/doctors",
+          `${apiBaseURL}/api/v1/user/doctors`,
           { withCredentials: true }
         );
         setTotalDoctors(data.doctors.length);
@@ -71,7 +72,7 @@ const Dashboard = () => {
   const availableBeds = totalBedCapacity - totalInpatients;
 
   return (
-    <section className="dashboard page">
+    <section className="dashboard page hidden">
       <div className="banner">
         <div className="firstBox">
           <div className="content">

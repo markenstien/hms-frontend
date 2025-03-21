@@ -14,9 +14,22 @@ import AddNewAdmin from "./components/AddNewAdmin";
 import Doctors from "./components/Doctors";
 import Sidebar from "./components/Sidebar";
 import BigDataChart from "./components/BigDataChart";
+import AddNewWard from "./components/AddNewWard";
+
 import { Context } from "./main";
 import axios from "axios";
 import "./App.css";
+import SampleExport from "./components/SampleExport";
+import ListWard from "./components/ListWard";
+
+import {
+  FaWalking,
+  FaFileArchive,
+  FaClinicMedical,
+  FaHospital,
+} from "react-icons/fa";
+
+const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
@@ -40,7 +53,7 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "https://hmscore1-backend.vercel.app/api/v1/user/admin/me",
+          `${apiBaseURL}/api/v1/user/admin/me`,
           { withCredentials: true }
         );
         setUser(response.data.user);
@@ -71,6 +84,8 @@ const App = () => {
           <Route path="/inpatients" element={<InPatients />} />
           <Route path="/archivedPatients" element={<PatientsArchive />} />
           <Route path="/outpatients" element={<OutPatients />} />
+          <Route path="/ward/create" element={<AddNewWard/>}></Route>
+          <Route path="/ward/" element={<ListWard/>}></Route>
           <Route
             path="/dashboard"
             element={
@@ -88,4 +103,5 @@ const App = () => {
   );
 };
 
+{/* <AddNewWard/> */}
 export default App;

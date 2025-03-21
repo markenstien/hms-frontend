@@ -12,12 +12,13 @@ const Login = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigateTo = useNavigate();
-
+  
   const handleLogin = async (e) => {
     e.preventDefault();
+    const loginAPI = import.meta.env.REACT_APP_API_BASE_URL + '/api/v1/user/login';
     try {
       const response = await axios.post(
-        "https://hmscore1-backend.vercel.app/api/v1/user/login",
+        loginAPI,
         { email, password, confirmPassword, role: "Admin" },
         {
           withCredentials: true,
@@ -26,6 +27,7 @@ const Login = () => {
       );
       toast.success(response.data.message);
       setIsAuthenticated(true);
+      
       navigateTo("/");
     } catch (error) {
       toast.error(error.response.data.message);
@@ -55,13 +57,6 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirm Password"
-        />
-
         <div style={{ justifyContent: "center", alignItems: "center" }}>
           <button type="submit">Login</button>
         </div>
