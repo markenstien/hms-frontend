@@ -118,43 +118,7 @@ const TableContent = ({wards = []}) => {
         },
     ];
 
-    var data = [
-        {
-          id: 1,
-          code: 'Beetlejuice',
-          model: 'Suite',
-          roomNumber : '101',
-          capacity : '2',
-          loadCount : '2',
-          roomStatus : 'Active',
-          description: 'Suite 2 beds, 1 TV airconditioned with CR',
-          roomAvailability : 'Full'
-      },
-
-      {
-        id: 2,
-        code: 'Delux',
-        model: 'delux',
-        roomNumber : '102',
-        capacity : '2',
-        loadCount : 1,
-        roomStatus : 'Active',
-        description: 'Suite 2 beds, 1 TV airconditioned with CR',
-        roomAvailability : 'Available'
-    },
-
-    {
-        id: 3,
-        code: 'VIP',
-        model: 'vip',
-        roomNumber : '103',
-        capacity : '2',
-        loadCount : 1,
-        roomStatus : 'Active',
-        description: 'Suite 2 beds, 1 TV airconditioned with CR',
-        roomAvailability : 'Available'
-    },
-    ];
+    var data = [];
     for(let i = 0; i < wards.length; i++) {
         data.push({
             id: wards[i]._id,
