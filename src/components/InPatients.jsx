@@ -200,15 +200,15 @@ const InPatients = () => {
                   </p>
                   <p>
                     Ward/Room Preference:{" "}
-                    <span>{element.ward.roomModel || "N/A"} {element.ward.roomNumber || ""}</span>
+                    <span>{element.ward.roomModel ?? "N/A"} {element.ward.roomNumber ?? ""}</span>
                   </p>
                   <p>
                     Attending Physician:{" "}
-                    <span>{element.physician.doctorDepartment || ""} {element.physician.name || "N/A"}</span>
+                    <span>{element.physician.doctorDepartment ?? ""} {element.physician.name ?? "N/A"}</span>
                   </p>
                   <p>
                     Expected Length of Stay:{" "}
-                    <span>{element.expectedLengthOfStay || "N/A"}</span>
+                    <span>{element.expectedLengthOfStay ?? "N/A"}</span>
                   </p>
                   <p>
                     Emergency Contact:{" "}
