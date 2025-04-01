@@ -4,6 +4,8 @@ import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { elements } from "chart.js";
+import ButtonLinkList from "./widget/ButtonLinkList";
+import { navigateToAddInPatient, navigateToInPatients } from "./Routers";
 
 const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 
@@ -12,9 +14,9 @@ const AddNewInpatient = () => {
   
   const { isAuthenticated } = useContext(Context);
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />; // redirect to login if not authenticated
-  }
+  // if (!isAuthenticated) {
+  //   return <Navigate to="/login" />; // redirect to login if not authenticated
+  // }
 
   const navigateTo = useNavigate();
 
@@ -73,9 +75,8 @@ const AddNewInpatient = () => {
   const [patients, setPatients] = useState([]);
   const [patientIsLoading, setPatientIsLoading] = useState(false);
   const [doctors, setDoctors] = useState([]);
-  const [dotorIsLoading, setDoctorIsLoading] = useState(false);
   const [wards, setWards] = useState([]);
-  
+  const [dotorIsLoading, setDoctorIsLoading] = useState(false);
 
   // dfetch doctors from the API
   useEffect(() => {
@@ -223,12 +224,30 @@ const AddNewInpatient = () => {
   return (
     <>
       <section className="page">
+        <div className="flex">
+          <div className="flex-1">
+            <h1 className="form-title">In Patient - Add Record</h1>
+          </div>
+
+          <div className="flex-2">
+              <ButtonLinkList buttonList={[
+                {
+                    "textContent" : 'List',
+                    "icon" : 'list',
+                    'className' : 'button-link bg-primary',
+                    'onClick' : navigateToInPatients,
+                },
+
+                {
+                    "textContent" : 'Add',
+                    "icon" : 'add',
+                    'onClick' : navigateToAddInPatient,
+                    'className' : 'button-link bg-primary'
+                }
+            ]}></ButtonLinkList>
+          </div>
+        </div>
         <div style={{width: '700px'}}>
-            <div className="flex">
-                <div className="flex-1">
-                  <h1 className="form-title">In Patient - Add Record</h1>
-                </div>
-            </div>
             <form onSubmit={handleSubmit}>
               <div className="card-main">
                 <div className="card-header">

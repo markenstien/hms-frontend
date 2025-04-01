@@ -4,28 +4,25 @@ import { TiHome } from "react-icons/ti";
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUserDoctor, FaBedPulse } from "react-icons/fa6";
-import { MdAddModerator } from "react-icons/md";
-import { IoPersonAddSharp } from "react-icons/io5";
+const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 import {
-  FaWalking,
   FaFileArchive,
-  FaClinicMedical,
   FaHospital,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { isAuthenticated } from "./Routers";
 
 const Sidebar = () => {
   const [show, setShow] = useState(false);
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   const [tooltip, setTooltip] = useState(""); // State to store tooltip text
   const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 }); // State to store tooltip position
   const [hideTimeout, setHideTimeout] = useState(null); // To track timeout ID
 
   const navigateTo = useNavigate();
-
+  
   const gotoHome = () => {
     navigateTo("/");
     setShow(!show);
@@ -42,6 +39,12 @@ const Sidebar = () => {
     navigateTo("/admin/addnew");
     setShow(!show);
   };
+
+  const gotoAddNewUser = () => {
+    navigateTo("/user/list");
+    setShow(!show);
+  };
+
   const gotoAddNewInpatient = () => {
     navigateTo("/inpatient/add");
     setShow(!show);
@@ -69,26 +72,25 @@ const Sidebar = () => {
   };
 
   const handleLogout = async () => {
-    try {
-      const res = await axios.get(
-        "https://hmscore1-backend.vercel.app/api/v1/user/admin/logout",
-        { withCredentials: true }
-      );
 
-      toast.success(res.data.message);
-  
-      localStorage.removeItem("adminToken");
-      
-      document.cookie = "adminToken=; Max-Age=0; path=/";
-  
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("auth-details");
+    document.cookie = "adminToken=; Max-Age=0; path=/";
+    toast.success('Logged out successfully');
+    navigateTo("/login", { replace: true });
 
-      navigateTo("/login", { replace: true });
-      setIsAuthenticated(false);
-    
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Logout failed");
+    // try {
+    //   const res = await axios.get(
+    //     `${apiBaseURL}/api/v1/user/admin/logout`,
+    //     { withCredentials: true }
+    //   );
 
-    }
+    //   toast.success(res.data.message);
+     
+    // } catch (err) {
+    //   toast.error(err.response?.data?.message || "Logout failed");
+
+    // }
   };
   
   
@@ -122,6 +124,7 @@ const Sidebar = () => {
     }
   };
 
+  const hasAuth = isAuthenticated();
   return (
     <>
       {/* Tooltip */}
@@ -147,66 +150,67 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <nav
-        style={!isAuthenticated ? { display: "none" } : { display: "flex" }}
-        className={show ? "show sidebar" : "sidebar"}
+        style={!hasAuth ? { display: "none" } : { display: "flex" }}
+        className={hasAuth ? "show sidebar" : "sidebar"}
       >
         <div className="links">
-          <TiHome
-            onClick={gotoHome}
-            onMouseEnter={(e) => handleMouseEnter(e, "Home")}
-            onMouseLeave={handleMouseLeave}
-          />
-          <FaBedPulse
-            onClick={gotoAddNewInpatient}
-            onMouseEnter={(e) => handleMouseEnter(e, "Add New Inpatient")}
-            onMouseLeave={handleMouseLeave}
-          />
-          <FaWalking
-            onClick={gotoAddNewOutpatient}
-            onMouseEnter={(e) => handleMouseEnter(e, "Add New Outpatient")}
-            onMouseLeave={handleMouseLeave}
-          />
-          <FaHospital
-            onClick={gotoInPatients}
-            onMouseEnter={(e) => handleMouseEnter(e, "Inpatients")}
-            onMouseLeave={handleMouseLeave}
-          />
-          <FaHospital
-            onClick={gotoWards}
-            onMouseEnter={(e) => handleMouseEnter(e, "Wards")}
-            onMouseLeave={handleMouseLeave}
-          />
+          <div onClick={gotoHome} className="link-item">
+            <TiHome
+              onMouseEnter={(e) => handleMouseEnter(e, "Home")}
+              onMouseLeave={handleMouseLeave}
+            />
+            Dashboard
+          </div>
 
-          <FaClinicMedical
-            onClick={gotoOutPatients}
-            onMouseEnter={(e) => handleMouseEnter(e, "Outpatients")}
-            onMouseLeave={handleMouseLeave}
-          />
-          <FaUserDoctor
-            onClick={gotoDoctorsPage}
-            onMouseEnter={(e) => handleMouseEnter(e, "Doctors")}
-            onMouseLeave={handleMouseLeave}
-          />
-          <MdAddModerator
-            onClick={gotoAddNewAdmin}
-            onMouseEnter={(e) => handleMouseEnter(e, "Add New Admin")}
-            onMouseLeave={handleMouseLeave}
-          />
-          <IoPersonAddSharp
-            onClick={gotoAddNewDoctor}
-            onMouseEnter={(e) => handleMouseEnter(e, "Add New Doctor")}
-            onMouseLeave={handleMouseLeave}
-          />
-          <FaFileArchive
-            onClick={gotoPatientsArchive}
-            onMouseEnter={(e) => handleMouseEnter(e, "Archived Patients")}
-            onMouseLeave={handleMouseLeave}
-          />
-          <RiLogoutBoxFill
-            onClick={handleLogout}
-            onMouseEnter={(e) => handleMouseEnter(e, "Logout")}
-            onMouseLeave={handleMouseLeave}
-          />
+          <div onClick={gotoInPatients} className="link-item">
+            <FaBedPulse
+              onMouseEnter={(e) => handleMouseEnter(e, "In Patients")}
+              onMouseLeave={handleMouseLeave}
+            />
+            In Patients
+          </div>
+
+          <div onClick={gotoOutPatients} className="link-item">
+            <FaBedPulse
+              onMouseEnter={(e) => handleMouseEnter(e, "Out Patients")}
+              onMouseLeave={handleMouseLeave}
+            />
+            Out Patients
+          </div>
+          
+          <div onClick={gotoWards} className="link-item">
+            <FaHospital
+              onMouseEnter={(e) => handleMouseEnter(e, "Wards")}
+              onMouseLeave={handleMouseLeave}
+            />
+            Wards
+          </div>
+
+          <div onClick={gotoAddNewUser} className="link-item">
+            <FaUserDoctor
+              onMouseEnter={(e) => handleMouseEnter(e, "User")}
+              onMouseLeave={handleMouseLeave}
+            />
+            User
+          </div>
+
+          <div onClick={gotoPatientsArchive} className="link-item">
+            <FaFileArchive
+              onMouseEnter={(e) => handleMouseEnter(e, "Archived Patients")}
+              onMouseLeave={handleMouseLeave}
+            />
+            Archived Patients
+          </div>
+
+          <div onClick={handleLogout} className="link-item">
+            <RiLogoutBoxFill
+              onClick={handleLogout}
+              onMouseEnter={(e) => handleMouseEnter(e, "Logout")}
+              onMouseLeave={handleMouseLeave}
+            />
+            Logout
+          </div>
+
         </div>
       </nav>
 

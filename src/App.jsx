@@ -28,6 +28,8 @@ import {
   FaClinicMedical,
   FaHospital,
 } from "react-icons/fa";
+import AddNewUser from "./components/AddNewUser";
+import ListUser from "./components/ListUser";
 
 const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 
@@ -86,6 +88,8 @@ const App = () => {
           <Route path="/outpatients" element={<OutPatients />} />
           <Route path="/ward/create" element={<AddNewWard/>}></Route>
           <Route path="/ward/" element={<ListWard/>}></Route>
+          <Route path="/user/addnew" element={<AddNewUser/>}></Route>
+          <Route path="/user/list" element={<ListUser/>}></Route>
           <Route
             path="/dashboard"
             element={

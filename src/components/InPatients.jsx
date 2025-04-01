@@ -2,15 +2,81 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../main";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import ButtonLinkList from "./widget/ButtonLinkList";
+import { isAuthenticated, navigateToAddInPatient, navigateToInPatients } from "./Routers";
+import DataTable from "react-data-table-component";
 
 const InPatients = () => {
   const [inpatients, setInPatients] = useState([]); // State to store inpatients list
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const { isAuthenticated } = useContext(Context); // Destructure isAuthenticated from Context
   const [showModal, setShowModal] = useState(false); // State to control modal visibility
   const [formData, setFormData] = useState({}); // State to store form data for editing
+
+  const [doctors, setDoctors] = useState([]);
+  const [wards, setWards] = useState([]);
+
   const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
+
+  const handlePhysician = (e) => {
+    const { name, value } = e.target;
+    let doctor = {};
+
+    for(let i in doctors) {
+      if(doctors[i]._id == value) {
+        doctor = doctors[i];
+      }
+    }
+    // const doctor = doctors[value];
+
+    const physicianData = {
+      index : value,
+      id: doctor._id,
+      name:  doctor.firstName + ' ' + doctor.lastName,
+      email:  doctor.email,
+      philsysornic : doctor.philsysornic,
+      doctorDepartment : doctor.doctorDepartment,
+    };
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: physicianData,
+    }));
+
+    console.log([
+      'form-data-physician',
+      name,value
+    ]);
+  }
+
+  const handleWard = (e) => {
+    const { name, value } = e.target;
+    let ward = {};
+
+    for(let i in wards) {
+      if(wards[i]._id == value) {
+        ward = wards[i];
+      }
+    }
+
+    const wardData = {
+      id: ward._id,
+      roomNumber:  ward.roomNumber,
+      loadCount:  ward.loadCount?? 0 + 1,
+      capacity : ward.capacity,
+      roomModel : ward.roomModel,
+    };
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: wardData,
+    }));
+
+    console.log([
+      'form-data-physician',
+      formData
+    ]);
+  }
   // Fetch inpatients from the API
   useEffect(() => {
     const fetchInPatients = async () => {
@@ -27,13 +93,48 @@ const InPatients = () => {
       }
     };
 
+
+    const fetchDoctors = async () => {
+      try {
+        const { data } = await axios.get(
+          `${apiBaseURL}/api/v1/user/doctors`,
+          { withCredentials: true }
+        );
+
+        console.log([
+          'doctors',
+          data.doctors
+        ]);
+        setDoctors(data.doctors);
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to fetch doctors");
+      }
+    }
+
+    const fetchWards = async () => {
+      try {
+        const { data } = await axios.get(
+          `${apiBaseURL}/api/v1/ward/`,
+          { withCredentials: true }
+        );
+        console.log([
+          'wards',
+          data.wards
+        ]);
+        setWards(data.wards);
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to fetch doctors");
+      }
+    };
+    fetchWards();
+    fetchDoctors();
     fetchInPatients(); // Call the fetch function
   }, []); // Empty dependency array means it runs once after the component mounts
 
   // If not authenticated, redirect to login
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/login" />;
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
   // Filter inpatients based on the search query
   const filteredInpatients = inpatients.filter((inpatient) =>
@@ -80,9 +181,26 @@ const InPatients = () => {
     }
   };
 
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+};
+
   // Function to open the update modal
   const openUpdateModal = (inpatient) => {
     setFormData(inpatient);
+
+    const dob = new Date(inpatient.dob);
+    const admissionDate = new Date(inpatient.admissionDate);
+    setFormData({
+        ...inpatient,
+        dob : formatDate(dob),
+        admissionDate : formatDate(admissionDate)
+    });
+    
     setShowModal(true);
   };
 
@@ -109,10 +227,91 @@ const InPatients = () => {
     }
   };
 
+  const InPatientsTable = ({inpatients= []}) => {
+    const columns = [
+      {
+        name: 'Name',
+        selector: row => row.fullname,
+      },
+  
+      {
+        name: 'Health Concern',
+        selector: row => row.primaryHealthConcern,
+      },
+      {
+        name : 'Condition',
+        selector : row => row.patientConditionLevel
+      },
+      {
+        name: 'Attending Physician',
+          selector: row => row.physicianName,
+      },
+      {
+        name : 'Ward',
+        selector : row => row.wardRoomNumber
+      },
+      {
+        name : 'Action',
+        selector : row => row.action
+      }
+    ];
+  
+    var data = [];
+      for(let i = 0; i < inpatients.length; i++) {
+          data.push({
+              fullname: inpatients[i].lastName + ' ' + inpatients[i].firstName,
+              primaryHealthConcern: inpatients[i].primaryHealthConcern,
+              patientConditionLevel: inpatients[i].patientConditionLevel,
+              physicianName : inpatients[i].physician.name,
+              wardRoomNumber : inpatients[i].ward.roomNumber,
+              action : <div onClick={() => openUpdateModal(inpatients[i])}>
+                <button className="button-link bg-success">Edit</button>
+              </div>
+          });
+      }
+    return (
+      <DataTable pagination className="dataTable" columns={columns} data={data}>
+      
+      </DataTable>
+    );
+  }
+
+  const DivMargin = ({height = '40'}) => {
+    return (
+      <div style={{
+        height : height + 'px'
+      }}>
+  
+      </div>
+    );
+  }
+
   return (
     <>
-      <section className="page patients">
-        <h1>INPATIENTS</h1>
+      <section className="page">
+        <div className="flex">
+            <div className="flex-1">
+                <h1 className="form-title">In-Patients</h1>
+            </div>
+
+            <div className="flex-2">
+                <ButtonLinkList buttonList={[
+                    {
+                        "textContent" : 'List',
+                        "icon" : 'list',
+                        'className' : 'button-link bg-primary',
+                        'onClick' : navigateToInPatients,
+                    },
+
+                    {
+                        "textContent" : 'Add',
+                        "icon" : 'add',
+                        'onClick' : navigateToAddInPatient,
+                        'className' : 'button-link bg-primary'
+                    }
+                ]}></ButtonLinkList>
+            </div>
+        </div>
 
         {/* Search Box */}
         <input
@@ -131,325 +330,260 @@ const InPatients = () => {
             maxWidth: "400px",
           }}
         />
-
-        <div className="banner">
-          {filteredInpatients.length > 0 ? (
-            filteredInpatients.map((element) => (
-              <div className="card" key={element.patientId}>
-                <h4>{`${element.firstName} ${element.lastName}`}</h4>
-                <div className="details">
-                  <p>
-                    Date of Birth: <span>{element.dob.substring(0, 10)}</span>
-                  </p>
-                  <p>
-                    Age:{" "}
-                    <span>
-                      {new Date().getFullYear() -
-                        new Date(element.dob).getFullYear()}
-                    </span>
-                  </p>
-                  <p>
-                    Gender: <span>{element.gender}</span>
-                  </p>
-                  <p>
-                    Mobile: <span>{element.mobile}</span>
-                  </p>
-                  <p>
-                    Landline: <span>{element.landline || "N/A"}</span>
-                  </p>
-                  <p>
-                    Email: <span>{element.email || "N/A"}</span>
-                  </p>
-                  <p>
-                    Address: <span>{element.address}</span>
-                  </p>
-                  <p>
-                    Primary Health Concern:{" "}
-                    <span>{element.primaryHealthConcern}</span>
-                  </p>
-                  <p>
-                    Medical History:{" "}
-                    <span>{element.medicalHistory || "N/A"}</span>
-                  </p>
-                  <p>
-                    Current Medications:{" "}
-                    <span>{element.currentMedications || "N/A"}</span>
-                  </p>
-                  <p>
-                    Family Medical History:{" "}
-                    <span>{element.familyMedicalHistory || "N/A"}</span>
-                  </p>
-                  <p>
-                    Insurance Provider:{" "}
-                    <span>
-                      {element.insuranceInformation?.provider || "N/A"}
-                    </span>
-                  </p>
-                  <p>
-                    Policy Number:{" "}
-                    <span>
-                      {element.insuranceInformation?.policyNumber || "N/A"}
-                    </span>
-                  </p>
-                  <p>
-                    Patient ID: <span>{element.patientId}</span>
-                  </p>
-                  <p>
-                    Admission Date:{" "}
-                    <span>{element.admissionDate.substring(0, 10)}</span>
-                  </p>
-                  <p>
-                    Ward/Room Preference:{" "}
-                    <span>{element.ward.roomModel ?? "N/A"} {element.ward.roomNumber ?? ""}</span>
-                  </p>
-                  <p>
-                    Attending Physician:{" "}
-                    <span>{element.physician.doctorDepartment ?? ""} {element.physician.name ?? "N/A"}</span>
-                  </p>
-                  <p>
-                    Expected Length of Stay:{" "}
-                    <span>{element.expectedLengthOfStay ?? "N/A"}</span>
-                  </p>
-                  <p>
-                    Emergency Contact:{" "}
-                    <span>{`${element.emergencyContact.name} (${element.emergencyContact.relationship}): ${element.emergencyContact.contactNumber}`}</span>
-                  </p>
-                  <p>
-                    Guardian Details:{" "}
-                    <span>{`${element.guardianDetails.name || "N/A"} (${
-                      element.guardianDetails.relationship || "N/A"
-                    })`}</span>
-                  </p>
-                </div>
-                <button
-                  className="update-btn"
-                  onClick={() => openUpdateModal(element)}
-                >
-                  Update
-                </button>
-                <button
-                  className="discharge-btn"
-                  onClick={() => dischargeInpatient(element.patientId)}
-                >
-                  Discharge
-                </button>
-              </div>
-            ))
-          ) : (
-            <h1>No Inpatients Found!</h1>
-          )}
-        </div>
-
         {/* Modal for Updating Inpatient Data */}
         {showModal && (
-          <div className="modal-overlay">
+          <div className="modal-overlay" style={{zIndex: '10000'}}>
             <div className="modal-content">
               <h2>Edit Inpatient Data</h2>
               <form onSubmit={handleSubmit}>
-                <label>First Name</label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                />
+                <div className="card-main">
+                  <div className="card-header">
+                    <div className="card-title">Personal Information</div>
+                  </div>
+                  <div className="card-body">
+                    <div>
+                      <label className="block mb-1 font-medium">First Name</label>
+                      <input name="firstName" onChange={handleChange} value={formData.firstName}></input>
+                    </div>
 
-                <label>Last Name</label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                />
+                    <div>
+                      <label className="block mb-1 font-medium">Last Name</label>
+                      <input name="lastName" onChange={handleChange} value={formData.lastName}></input>
+                    </div>
 
-                <label>Date of Birth</label>
-                <input
-                  type="date"
-                  name="dob"
-                  value={formData.dob?.substring(0, 10)}
-                  onChange={handleChange}
-                  required
-                />
+                    <div>
+                      <label className="block mb-1 font-medium">Middle Name</label>
+                      <input name="middleName" onChange={handleChange} value={formData.middleName}></input>
+                    </div>
+                    
+                    <div>
+                      <label className="block mb-1 font-medium">Gender</label>
+                      <select
+                          name="gender"
+                          value={formData.gender}
+                          onChange={handleChange}
+                          className="mt-1 block w-full p-2 border rounded-lg shadow-sm"
+                      >
+                          <option value="">--Select</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                      </select>
+                    </div>
 
-                <label>Gender</label>
-                <select
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
+                    <div>
+                    <label className="block mb-1 font-medium">Date of Birth</label>
+                    <input type="date" name="dob" onChange={handleChange} value={formData.dob}></input>
+                    </div>
+                  </div>
+                </div>
 
-                <label>Mobile</label>
-                <input
-                  type="tel"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  required
-                />
+                <DivMargin></DivMargin>
 
-                <label>Landline</label>
-                <input
-                  type="tel"
-                  name="landline"
-                  value={formData.landline}
-                  onChange={handleChange}
-                />
+                <div className="card-main">
+                  <div className="card-header">
+                    <div className="card-title">Admission Information</div>
+                  </div>
 
-                <label>Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
+                  <div className="card-body">
+                    <div>
+                        <label className="block mb-1 font-medium">Admission Date</label>
+                        <input type="date" name="admissionDate" onChange={handleChange} value={formData.admissionDate}></input>
+                    </div>
 
-                <label>Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  required
-                />
+                    <div>
+                        <label className="block mb-1 font-medium">Health Concern</label>
+                        <input name="primaryHealthConcern" onChange={handleChange} value={formData.primaryHealthConcern}></input>
+                    </div>
 
-                <label>Primary Health Concern</label>
-                <input
-                  type="text"
-                  name="primaryHealthConcern"
-                  value={formData.primaryHealthConcern}
-                  onChange={handleChange}
-                  required
-                />
+                    <div>
+                      <label className="block mb-1 font-medium">Patient Condition Level</label>
+                      <select
+                          name="patientConditionLevel"
+                          value={formData.patientConditionLevel}
+                          onChange={handleChange}
+                          className="mt-1 block w-full p-2 border rounded-lg shadow-sm"
+                        >
+                          <option value="">--Select</option>
+                          <option value="Good">Good</option>
+                          <option value="Serious">Serious</option>
+                          <option value="Critical">Critical</option>
+                      </select>
+                    </div>
 
-                {/* Change textarea to input for medical history */}
-                <label>Medical History</label>
-                <input
-                  type="text"
-                  name="medicalHistory"
-                  value={formData.medicalHistory}
-                  onChange={handleChange}
-                />
+                    <div>
+                        <label className="block mb-1 font-medium">Current Medications</label>
+                        <textarea name="currentMedications" id="" rows={3}  className="block w-full" 
+                          value={formData.currentMedications}
+                          onChange={handleChange}></textarea>
+                    </div>
+                    <div>
+                        <label className="block mb-1 font-medium">Medical History</label>
+                        <textarea name="medicalHistory" id="" rows={3}  className="block w-full" 
+                          value={formData.medicalHistory}
+                          onChange={handleChange}></textarea>
+                    </div>
+                    <div>
+                        <label className="block mb-1 font-medium">Family Medical History</label>
+                        <textarea name="familyMedicalHistory" id="" rows={3}  className="block w-full" 
+                          value={formData.familyMedicalHistory}
+                          onChange={handleChange}></textarea>
+                    </div>
 
-                {/* Change textarea to input for current medications */}
-                <label>Current Medications</label>
-                <input
-                  type="text"
-                  name="currentMedications"
-                  value={formData.currentMedications}
-                  onChange={handleChange}
-                />
+                    <div>
+                      <label className="block mb-1 font-medium">Attending Physician</label>
+                      {
+                        doctors.length < 0 ? (<h1>No attending doctors available</h1>) : (
+                          <select
+                            name="physician"
+                            value={formData.physician.id}
+                            onChange={handlePhysician}
+                            className="mt-1 block w-full p-2 border rounded-lg shadow-sm"
+                          >
+                            <option value="">Select</option>
+                            {doctors.map((doctor, index) => {
+                              // let isSelected = formData.physician
+                              return <option value={doctor._id}>{doctor.doctorDepartment} - {doctor.firstName} {doctor.lastName}</option>
+                            })}
+                          </select>
+                        )
+                      }
+                    </div>
+                    <div className="flex">
+                      <div className="flex-1">
+                        <div>
+                            <label className="block mb-1 font-medium">Ward</label>
+                            {wards.length < 0 ? (<h1>No attending doctors available</h1>) : (
+                              <select
+                              name="ward"
+                              value={formData.ward.id}
+                              onChange={handleWard}
+                              className="mt-1 block w-full p-2 border rounded-lg shadow-sm"
+                            >
+                              <option value="">Select</option>
+                              {wards.map((ward) => {
+                                return <option value={ward._id}>{ward.roomModel} - {ward.roomNumber}</option>
+                              })}
+                            </select>
+                            )}
+                        </div>
+                      </div>
 
-                {/* Change textarea to input for family medical history */}
-                <label>Family Medical History</label>
-                <input
-                  type="text"
-                  name="familyMedicalHistory"
-                  value={formData.familyMedicalHistory}
-                  onChange={handleChange}
-                />
+                      <div className="flex-1">
+                        <div>
+                            <label className="block mb-1 font-medium">Length Of Stay</label>
+                            <input name="expectedLengthOfStay" onChange={handleChange} value={formData.expectedLengthOfStay}></input>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
 
-                <label>Insurance Provider</label>
-                <input
-                  type="text"
-                  name="insuranceInformation.provider"
-                  value={formData.insuranceInformation?.provider || ""}
-                  onChange={handleChange}
-                />
+                <DivMargin></DivMargin>
 
-                <label>Policy Number</label>
-                <input
-                  type="text"
-                  name="insuranceInformation.policyNumber"
-                  value={formData.insuranceInformation?.policyNumber || ""}
-                  onChange={handleChange}
-                />
+                <div className="card-main">
+                  <div className="card-header">
+                    <div className="card-title">Patient Insurance</div>
+                  </div>
 
-                <label>Ward/Room Preference</label>
-                <input
-                  type="text"
-                  name="wardRoomPreference"
-                  value={formData.wardRoomPreference}
-                  onChange={handleChange}
-                />
+                  <div className="card-body">
+                    <div>
+                        <label className="block mb-1 font-medium">Insurance Provider</label>
+                        <input type="text" name="insuranceInformation.provider" onChange={handleChange} value={formData.insuranceInformation.provider}></input>
+                    </div>
 
-                <label>Expected Length of Stay</label>
-                <input
-                  type="text"
-                  name="expectedLengthOfStay"
-                  value={formData.expectedLengthOfStay}
-                  onChange={handleChange}
-                />
+                    <div>
+                        <label className="block mb-1 font-medium">Policy Number</label>
+                        <input name="insuranceInformation.policyNumber" onChange={handleChange} value={formData.insuranceInformation.policyNumber}></input>
+                    </div>
+                  </div>
+                </div>
 
-                <label>Emergency Contact Name</label>
-                <input
-                  type="text"
-                  name="emergencyContact.name"
-                  value={formData.emergencyContact?.name || ""}
-                  onChange={handleChange}
-                  required
-                />
+                <DivMargin></DivMargin>
 
-                <label>Emergency Contact Relationship</label>
-                <input
-                  type="text"
-                  name="emergencyContact.relationship"
-                  value={formData.emergencyContact?.relationship || ""}
-                  onChange={handleChange}
-                  required
-                />
+                <div className="card-main">
+                  <div className="card-header">
+                    <div className="card-title">Contacts</div>
+                  </div>
 
-                <label>Emergency Contact Number</label>
-                <input
-                  type="tel"
-                  name="emergencyContact.contactNumber"
-                  value={formData.emergencyContact?.contactNumber || ""}
-                  onChange={handleChange}
-                  required
-                />
+                  <div className="card-body">
+                    <div>
+                        <label className="block mb-1 font-medium">Mobile Number</label>
+                        <input type="text" name="mobile" onChange={handleChange} value={formData.mobile}></input>
+                    </div>
 
-                <label>Guardian Name</label>
-                <input
-                  type="text"
-                  name="guardianDetails.name"
-                  value={formData.guardianDetails?.name || ""}
-                  onChange={handleChange}
-                  required
-                />
+                    <div>
+                        <label className="block mb-1 font-medium">Email</label>
+                        <input name="email" onChange={handleChange} value={formData.email}></input>
+                    </div>
 
-                <label>Guardian Relationship</label>
-                <input
-                  type="text"
-                  name="guardianDetails.relationship"
-                  value={formData.guardianDetails?.relationship || ""}
-                  onChange={handleChange}
-                  required
-                />
+                    <div>
+                        <label className="block mb-1 font-medium">Address</label>
+                        <textarea name="address" onChange={handleChange} value={formData.address} rows={4} className="w-full"></textarea>
+                    </div>
 
-                <button type="submit" className="save-btn">
+                    <DivMargin height="10"></DivMargin>
+                    
+                    <h3>Emergency Contact</h3>
+
+                    <div>
+                        <label className="block mb-1 font-medium">Name</label>
+                        <input type="text" name="emergencyContact.name" onChange={handleChange} value={formData.emergencyContact.name}></input>
+                    </div>
+
+                    <div>
+                        <label className="block mb-1 font-medium">Relation</label>
+                        <input name="emergencyContact.relationship" onChange={handleChange} value={formData.emergencyContact.relationship}></input>
+                    </div>
+
+                    <div>
+                        <label className="block mb-1 font-medium">Contact</label>
+                        <input name="emergencyContact.contactNumber" onChange={handleChange} value={formData.emergencyContact.contactNumber}></input>
+                    </div>
+
+                    <DivMargin height="10"></DivMargin>
+                    
+                    <h3>Guardian</h3>
+
+                    <div>
+                        <label className="block mb-1 font-medium">Name</label>
+                        <input type="text" name="guardianDetails.name" onChange={handleChange} value={formData.guardianDetails.name}></input>
+                    </div>
+
+                    <div>
+                        <label className="block mb-1 font-medium">Relation</label>
+                        <input name="guardianDetails.relationship" onChange={handleChange} value={formData.guardianDetails.relationship}></input>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" className="button-link bg-success" style={{marginTop: '40px', marginRight: '12px'}}>
                   Save Changes
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="cancel-btn"
-                >
-                  Cancel
+
+                <button type="submit" className="button-link bg-warning" style={{marginTop: '40px'}} onClick={() => {
+                  setShowModal(false);
+                }}>
+                  Close
                 </button>
               </form>
             </div>
           </div>
         )}
+
+        <div className="card-main">
+          <div className="card-header">
+            <div className="card-title">In Patients</div>
+          </div>
+
+          <div className="card-body">
+            <InPatientsTable inpatients={filteredInpatients}></InPatientsTable>
+          </div>
+        </div>
       </section>
     </>
   );
 };
+
 
 export default InPatients;

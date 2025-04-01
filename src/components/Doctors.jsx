@@ -3,6 +3,7 @@ import { Context } from "../main";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
+import { isAuthenticated } from "./Routers";
 const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 
 const departmentChoices = [
@@ -17,7 +18,6 @@ const departmentChoices = [
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
-  const { isAuthenticated } = useContext(Context);
   const [editingDoctor, setEditingDoctor] = useState(null);
   const [updatedDoctor, setUpdatedDoctor] = useState({});
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -121,7 +121,7 @@ const Doctors = () => {
     setIsDeleteConfirmOpen(false);
   };
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated()) {
     return <Navigate to="/login" />;
   }
 

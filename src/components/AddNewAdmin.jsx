@@ -3,10 +3,9 @@ import { Context } from "../main";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { isAuthenticated } from "./Routers";
 
 const AddNewAdmin = () => {
-  // Accessing authentication context to check if the user is logged in
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   // State variables for storing admin details
   const [firstName, setFirstName] = useState("");
@@ -45,7 +44,6 @@ const AddNewAdmin = () => {
       );
      
       toast.success(response.data.message);
-      setIsAuthenticated(true);
       navigateTo("/");
     } catch (error) {
       
@@ -54,7 +52,7 @@ const AddNewAdmin = () => {
   };
 
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated()) {
     return <Navigate to={"/login"} />;
   }
 

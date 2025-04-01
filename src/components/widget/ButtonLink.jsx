@@ -7,9 +7,16 @@ import {
 const ButtonLink = ({textContent, icon, onClick, className, key}) => {
     return (
         <>  
-            <button onClick = {onClick()} className= {className}>
+            {onClick != null ? (
+                <button onClick={onClick()} className= {className}>
                 {icon == 'list' ? <FaList></FaList>:<FaPlus></FaPlus>}  {textContent}
             </button>
+            ) : (
+                <button  className= {className}>
+                    {icon == 'list' ? <FaList></FaList>:<FaPlus></FaPlus>}  {textContent}
+                </button>
+            )}
+            
         </>
     );
 }
