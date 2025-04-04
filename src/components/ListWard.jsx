@@ -220,10 +220,9 @@ const ListWard = () => {
                                         className="mt-1 block w-full p-2 border rounded-lg shadow-sm"
                                     >
                                         <option value="">--Select</option>
-                                        <option value="regular">Regular</option>
-                                        <option value="private">VIP</option>
-                                        <option value="delux">Delux</option>
-                                        <option value="suite">Suite</option>
+                                        <option value="Medical and Surgical Patient">Medical and Surgical Patient Room - contagious/not contagious</option>
+                                        <option value="Intensive Care Unit Patient">Intensive Care Unit Patient Room - contagious/not contagious</option>
+                                        <option value="Maternity Care Patient">Maternity Care Patient Room</option>
                                     </select>
                                 </div>
 

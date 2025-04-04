@@ -9,6 +9,7 @@ import { departmentsArray, userAccessTypes, userPositions } from "./helpers/User
 const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 
 const AddNewUser = () => {
+ const navigateTo = useNavigate();
 
   // State variables for storing admin details
   const [firstName, setFirstName] = useState("");
@@ -34,8 +35,6 @@ const AddNewUser = () => {
       </div>
     );
   }
-
-  
     const handleAvatar = async (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -45,7 +44,6 @@ const AddNewUser = () => {
         setDocAvatar(file);
         };
     };
-
   // Handler for adding new admin when the form is submitted
   const handleAddNewAdmin = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
@@ -64,7 +62,13 @@ const AddNewUser = () => {
       formData.append("userAccess", userAccess);
       formData.append("userPosition", userPosition);
       formData.append("docAvatar", docAvatar);
+      formData.append("doctorDepartment", '');
 
+      formData.forEach((value,key) => {
+        console.log([
+            key,value
+        ])
+      });
       const response = await axios.post(
         `${apiBaseURL}/api/v1/user/addnew`,
         formData,
@@ -76,7 +80,6 @@ const AddNewUser = () => {
       toast.success(response.data.message);
       navigateTo("/user/list");
     } catch (error) {
-      
       toast.error(error.response?.data?.message || "Something went wrong!");
     }
   };
@@ -85,7 +88,7 @@ const AddNewUser = () => {
         switch(userAccess) {
             case 'Administrative' : 
                 return userPositions.administrative;
-            case 'staff' : 
+            case 'Staff' : 
                 return userPositions.staff;
             default : 
                 return [];
@@ -198,8 +201,11 @@ const AddNewUser = () => {
                         <div>
                             <label htmlFor="#">User Access</label>
                             <select
+                                name="userAccess"
                                 value={userAccess}
-                                onChange={(e) => setUserAccess(e.target.value)}
+                                onChange={(e) => {
+                                    setUserAccess(e.target.value)
+                                }}
                                 required
                             >
                                 <option value="">--Select</option>
@@ -210,8 +216,11 @@ const AddNewUser = () => {
                         <div>
                             <label htmlFor="#">Position</label>
                             <select
+                                name="userPosition"
                                 value={userPosition}
-                                onChange={(e) => setUserPosition(e.target.value)}
+                                onChange={(e) => {
+                                    setUserPosition(e.target.value);
+                                }}
                                 required
                             >
                                 <option value="">--Select</option>

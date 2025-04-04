@@ -5,7 +5,7 @@ export const userAccessTypes = [
 
 export const userPositions = {
     administrative : [
-        'Super Admin'
+        'Admin'
     ],
 
     staff : [

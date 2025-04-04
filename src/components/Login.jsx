@@ -70,12 +70,14 @@ const Login = () => {
         };
 
         setUserData(JSON.stringify(userData));
-
         setOtpCode(o => ({...o, otpCodeValid: randomNumber}));
-
 
         let randomNumber = randn(4);
         
+        console.log([
+          'mesage',
+          randomNumber
+        ])
         let myData = {
           service_id: 'service_3tgt94l',
           template_id: 'template_z9kuabh',
