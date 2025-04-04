@@ -373,7 +373,9 @@ const AddNewInpatient = () => {
                           >
                             <option value="">Select</option>
                             {wards.map((ward, index) => {
-                              return <option value={index}>{ward.roomModel} - {ward.roomNumber}</option>
+                              if((ward.capacity - ward.loadCount) > 1) {
+                                return <option value={index}>{ward.roomModel} - {ward.roomNumber}</option>
+                              }
                             })}
                           </select>
                           )}

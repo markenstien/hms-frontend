@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   const [wards, setWards] = useState({
     availableBeds : '',
-    occupied : '',
+    usedBed : '',
     availableWards : []
   });
   const quotes = [
@@ -65,6 +65,23 @@ const Dashboard = () => {
 
     return bedTotal;
   }
+
+  const calculateAvailableBeds = () => {
+    let capacity = 0;
+    let usedBed = 0;
+    for(let i in wards.availableWards) {
+      capacity = capacity + wards.availableWards[i].capacity || 0;
+      usedBed = usedBed + wards.availableWards[i].loadCount;
+    }
+
+    console.log(['capcity',capacity - usedBed, [
+      wards.availableWards,
+      capacity,
+      usedBed
+    ]]);
+
+    return (capacity - usedBed);
+  }
   useEffect(() => {
     if(isFromLogin == 'yes') {
       countdownTimer();
@@ -74,37 +91,30 @@ const Dashboard = () => {
       })
     }
 
+    console.log(whoIs())
+
     const fetchWards = async () => {
       try {
         const { data } = await axios.get(
           `${apiBaseURL}/api/v1/ward/`,
           { withCredentials: true }
         );
-        setWards(w => ({...w, availableWards: data.wards}));
 
-        /**
-         * computing wards
-         */
         let availableBedWardCount = 0;
+        let usedBed  = 0;
 
-        console.log([
-          'wards',
-          wards.availableWards
-        ])
-        for(let i in wards.availableWards) {
+        for(let i in data.wards) {
+          availableBedWardCount = availableBedWardCount + data.wards[i].capacity || 0;
 
-          console.log([
-            'availableBedWardCount',
-            availableBedWardCount
-          ]);
-          // availableBedWardCount = availableBedWardCount + wards.availableWards[i].capacity;
-          // console.log([
-          //   'availableBedWardCount',
-          //   availableBedWardCount
-          // ]);
-          // availableBedWardCount++;
+          if(data.wards[i].loadCount != null) {
+            usedBed += data.wards[i].loadCount;
+          }
         }
-        // setWards(w => ({...w, availableBeds: availableBedWardCount}));
+        setWards({
+          availableWards : data.wards,
+          usedBed : usedBed,
+          availableBeds : availableBedWardCount
+        });
       } catch (error) {
         toast.error(error.response?.data?.message || "Failed to fetch doctors");
       }
@@ -194,11 +204,11 @@ const Dashboard = () => {
               <p>Bed Capacity</p>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <FaBedPulse style={{ marginRight: "8px", fontSize: "27px" }} />
-                <h3>{calculateBeds()} Total</h3>
+                <h3>{wards.availableBeds} Total</h3>
               </div>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <PiBedFill style={{ marginRight: "8px", fontSize: "27px" }} />
-                <h3>{availableBeds} Available</h3>
+                <h3>{wards.availableBeds - wards.usedBed} Available</h3>
               </div>
             </div>
           </div>
@@ -210,7 +220,7 @@ const Dashboard = () => {
             <BigDataChart
               totalInpatients={totalInpatients}
               totalOutpatients={totalOutpatients}
-              availableBeds={availableBeds}
+              availableBeds={wards.availableBeds}
               totalDoctors={totalDoctors}
             />
           </div>

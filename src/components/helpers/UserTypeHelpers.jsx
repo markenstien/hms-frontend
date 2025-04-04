@@ -1,15 +1,14 @@
 export const userAccessTypes = [
     'Administrative',
-    'Customer Service'
+    'Staff'
 ];
 
 export const userPositions = {
     administrative : [
-        'Super Admin',
-        'Staff'
+        'Super Admin'
     ],
 
-    customerService : [
+    staff : [
         'ER',
         'Nurse',
         'Doctor'

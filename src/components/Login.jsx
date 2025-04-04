@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import { isAuthenticated } from "./Routers";
 import OtpScreen from "./widget/OtpScreen";
+import randn from "randn";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,34 +14,25 @@ const Login = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoginCorrect, setIsLoginCorrect] = useState(false);
   const [userData, setUserData] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const [otpCode, setOtpCode] = useState({
     otpCodeValid : '',
     otpCodeInput : ''
   });
   const navigateTo = useNavigate();
 
-  const handleOtpCode = (name, value) => {
-    setOtpCode((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  }
   function setCodeInput(codeInput) {
     setOtpCode(o => ({...otpCode, otpCodeInput: codeInput}));
 
     if(otpCode.otpCodeValid == codeInput) {
       localStorage.setItem('auth-details', userData);
+      window.location.reload();
       navigateTo("/?fromLogin=yes");
-
     } else {
-      console.log('otp is not valid');
+      toast.error("In-Correct OTP Code");
+      console.log('test');
     }
-    
-    console.log([
-      'code input',
-      codeInput,
-      otpCode.otpCodeValid
-    ]);
   }
   
   const handleLogin = async (e) => {
@@ -54,20 +47,60 @@ const Login = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      toast.success(response.data.message);
-      setOtpCode(o => ({...o, otpCodeValid: '3241'}));
 
-      setUserData(JSON.stringify({
-        token : response.data.token,
-        user: {
-          id : response.data.user._id,
-          role : response.data.user.role,
-          email : response.data.user.email,
-          firstName : response.data.user.firstName,
-          lastName : response.data.user.lastName
-        }
-      }));
-      setIsLoginCorrect(true);
+      if(response.data.success == true) {
+        var userResponseData = response.data.user;
+
+        console.log([
+          'response',
+          response.data
+        ])
+        var userData = {
+          token : response.data.token,
+          user: {
+            id : userResponseData._id,
+            role : userResponseData.role,
+            userAccess: userResponseData.userAccess,
+            position: userResponseData.userPosition,
+            docAvatar : userResponseData.docAvatar,
+            email : userResponseData.email,
+            firstName : userResponseData.firstName,
+            lastName : userResponseData.lastName
+          }
+        };
+
+        setUserData(JSON.stringify(userData));
+
+        setOtpCode(o => ({...o, otpCodeValid: randomNumber}));
+
+
+        let randomNumber = randn(4);
+        
+        let myData = {
+          service_id: 'service_3tgt94l',
+          template_id: 'template_z9kuabh',
+          user_id: 'Z7xYtcSFDWSknwG68',
+          template_params: {
+            passcode: randomNumber,
+            email : response.data.user.email ?? 'gonzalesmarkangeloph@gmail.com'
+          }
+        };
+
+
+        console.log(randomNumber);
+
+        // const emailResponse = await axios.post(
+        //   'https://api.emailjs.com/api/v1.0/email/send',
+        //   myData,
+        //   {
+        //     headers: { "Content-Type": "application/json" },
+        //   }
+        // ).then((promise) => {
+        //   setIsLoading(true);
+        // });
+
+        setIsLoginCorrect(true);
+      }
     } catch (error) {
       toast.error(error.response.data.message);
     }

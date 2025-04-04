@@ -198,15 +198,17 @@ const InPatients = () => {
     setFormData({
         ...inpatient,
         dob : formatDate(dob),
-        admissionDate : formatDate(admissionDate)
+        admissionDate : formatDate(admissionDate),
+        isComplete : inpatient.isComplete ?? false
     });
-    
+
     setShowModal(true);
   };
 
   // Function to handle form submission for updating inpatient data
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormData({...formData});
     try {
       const response = await axios.put(
         `${apiBaseURL}/api/v1/inpatients/update/${formData.patientId}`,
@@ -251,6 +253,10 @@ const InPatients = () => {
         selector : row => row.wardRoomNumber
       },
       {
+        name : 'Status',
+        selector : row => row.isDischarged
+      },
+      {
         name : 'Action',
         selector : row => row.action
       }
@@ -264,6 +270,7 @@ const InPatients = () => {
               patientConditionLevel: inpatients[i].patientConditionLevel,
               physicianName : inpatients[i].physician.name,
               wardRoomNumber : inpatients[i].ward.roomNumber,
+              isDischarged : inpatients[i].isComplete? <span>Discharged</span> : <div>Admitted-Ongoing </div>,
               action : <div onClick={() => openUpdateModal(inpatients[i])}>
                 <button className="button-link bg-success">Edit</button>
               </div>
@@ -284,6 +291,16 @@ const InPatients = () => {
   
       </div>
     );
+  }
+
+  const setComplete = async () => {
+    const response = await axios.put(`${apiBaseURL}/api/v1/inpatients/complete/${formData._id}`, {}, {withCredentials: true});
+    setShowModal(false);
+    if(response.data.message == 'Completed') {
+      toast.success("Completed!");
+    } else {
+      toast.error("Something went wrong!")
+    }
   }
 
   return (
@@ -336,6 +353,11 @@ const InPatients = () => {
             <div className="modal-content">
               <h2>Edit Inpatient Data</h2>
               <form onSubmit={handleSubmit}>
+                {
+                  !formData.isComplete ? (
+                    <button type="button" onClick={setComplete} className="button-link bg-primary" style={{marginBottom: '5px'}}>Complete</button>
+                  ) : (<div className="bg-warning" style={{marginTop: '30px', padding:'15px'}}>Patient is Discharged</div>)
+                }
                 <div className="card-main">
                   <div className="card-header">
                     <div className="card-title">Personal Information</div>
@@ -461,7 +483,15 @@ const InPatients = () => {
                             >
                               <option value="">Select</option>
                               {wards.map((ward) => {
-                                return <option value={ward._id}>{ward.roomModel} - {ward.roomNumber}</option>
+
+                                console.log([
+                                  'calc',
+                                  ward.capacity,
+                                  ward.loadCount
+                                ]);
+                                if((ward.capacity - ward.loadCount) > 1) {
+                                  return <option value={ward._id}>{ward.roomModel} - {ward.roomNumber}</option>
+                                }
                               })}
                             </select>
                             )}

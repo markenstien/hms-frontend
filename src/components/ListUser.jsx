@@ -5,6 +5,7 @@ import ButtonLinkList from "./widget/ButtonLinkList";
 import axios from "axios";
 import { navigateToAddUser, navigateToUsers } from "./Routers";
 import { departmentsArray, userAccessTypes, userPositions } from "./helpers/UserTypeHelpers";
+import { toast } from "react-toastify";
 const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 
 
@@ -169,10 +170,19 @@ const ListUser = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             }
         );
-        console.log([
-            'update-response',
-            response.data
-        ]);
+
+        if(response.data.success == true) {
+            toast.success("User Updated");
+            setShowModal(false);
+
+            setFormData(e =>({...formData, ...formDataToSubmit}));
+
+            setUsers((prev) =>
+                prev.map((user) =>
+                    user._id === formData._id ? formData : user
+                )
+            );
+        }
     };
 
     const handleAvatar = async (e) => {
@@ -190,8 +200,8 @@ const ListUser = () => {
         switch(formData.userAccess) {
             case 'Administrative' : 
                 return userPositions.administrative;
-            case 'Customer Service' : 
-                return userPositions.customerService;
+            case 'Staff' : 
+                return userPositions.staff;
             default : 
                 return [];
         }

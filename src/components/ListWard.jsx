@@ -120,10 +120,10 @@ const ListWard = () => {
                 model: wards[i].roomModel,
                 roomNumber : wards[i].roomNumber,
                 capacity : wards[i].capacity,
-                loadCount : wards[i].loadCount,
+                loadCount : wards[i].loadCount || 0,
                 roomStatus : wards[i].roomStatus,
                 description:  wards[i].description,
-                roomAvailability : wards[i].roomAvailability,
+                roomAvailability : (wards[i].capacity -  (wards[i].loadCount || 0)) > 1 ?  <span className="bg-primary button-link">Available</span> : <span className="bg-danger button-link">Full</span>,
                 action : <div onClick={() => openUpdateModal(wards[i])}>
                 <button className="button-link bg-success">Edit</button>
             </div>
