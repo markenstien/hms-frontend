@@ -132,7 +132,7 @@ const Login = () => {
           </>
         ) : (
           <div className="form-component">
-              <img src="/aboutlogo.png" alt="logo" className="logo" />
+              <img src="../src/assets/images/logo_png.png" alt="logo" className="logo" style={{marginBottom: '30px'}} />
               <h1 className="form-title">Nodado General Hospital</h1>
               <p>Only admins are allowed in this area</p>
 
