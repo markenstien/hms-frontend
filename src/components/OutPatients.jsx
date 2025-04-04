@@ -202,7 +202,7 @@ const OutPatients = () => {
               fullname: outpatients[i].lastName + ' ' + outpatients[i].firstName,
               primaryHealthConcern: outpatients[i].primaryHealthConcern,
               patientConditionLevel: outpatients[i].patientConditionLevel ?? 'N/A',
-              physicianName : outpatients[i].physician.name,
+              physicianName : outpatients[i].physician.firstName,
               action : <div onClick={() => openModal(outpatients[i])}>
                 <button className="button-link bg-success">Edit</button>
               </div>

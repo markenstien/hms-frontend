@@ -10,7 +10,7 @@ import OtpScreen from "./widget/OtpScreen";
 const queryParameters = new URLSearchParams(window.location.search)
 
 const Dashboard = () => {
-  const [hasAuth, setHasAuth] = useState(isAuthenticated);
+  const [hasAuth, setHasAuth] = useState(isAuthenticated());
   const [userData, setUserData]= useState(whoIs());
   
   const [loadTimer, setLoadTimer] = useState({
@@ -151,7 +151,7 @@ const Dashboard = () => {
       }
     };
     
-    if (isAuthenticated) {
+    if (hasAuth) {
       fetchCounts();
       fetchDoctors();
       fetchWards();
@@ -159,9 +159,9 @@ const Dashboard = () => {
 
     setRandomQuote(quotes[Math.floor(Math.random() * quotes.length)]);
     
-  }, [isAuthenticated]);
+  }, []);
 
-  if (!isAuthenticated) {
+  if (!hasAuth) {
     return <Navigate to={"/login"} />;
   }
   // Calculate available beds

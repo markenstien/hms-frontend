@@ -85,8 +85,8 @@ const AddNewUser = () => {
         switch(userAccess) {
             case 'Administrative' : 
                 return userPositions.administrative;
-            case 'Customer Service' : 
-                return userPositions.customerService;
+            case 'staff' : 
+                return userPositions.staff;
             default : 
                 return [];
         }

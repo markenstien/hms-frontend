@@ -23,7 +23,7 @@ const Login = () => {
   const navigateTo = useNavigate();
 
   function setCodeInput(codeInput) {
-    setOtpCode(o => ({...otpCode, otpCodeInput: codeInput}));
+    setOtpCode(o => ({...o, otpCodeInput: codeInput}));
 
     if(otpCode.otpCodeValid == codeInput) {
       localStorage.setItem('auth-details', userData);
@@ -86,18 +86,15 @@ const Login = () => {
           }
         };
 
-
-        console.log(randomNumber);
-
-        // const emailResponse = await axios.post(
-        //   'https://api.emailjs.com/api/v1.0/email/send',
-        //   myData,
-        //   {
-        //     headers: { "Content-Type": "application/json" },
-        //   }
-        // ).then((promise) => {
-        //   setIsLoading(true);
-        // });
+        const emailResponse = await axios.post(
+          'https://api.emailjs.com/api/v1.0/email/send',
+          myData,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        ).then((promise) => {
+          setIsLoading(true);
+        });
 
         setIsLoginCorrect(true);
       }
@@ -132,7 +129,7 @@ const Login = () => {
           </>
         ) : (
           <div className="form-component">
-              <img src="../src/assets/images/logo_png.png" alt="logo" className="logo" style={{marginBottom: '30px'}} />
+              <img src="logo_png.png" alt="logo" className="logo" style={{marginBottom: '30px'}} />
               <h1 className="form-title">Nodado General Hospital</h1>
               <p>Only admins are allowed in this area</p>
 

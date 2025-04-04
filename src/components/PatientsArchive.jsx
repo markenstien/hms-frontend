@@ -3,18 +3,18 @@ import { Context } from "../main";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
+import { isAuthenticated } from "./Routers";
+const apiBaseURL = import.meta.env.REACT_APP_API_BASE_URL;
 
 const PatientsArchive = () => {
   const [archivedPatients, setArchivedPatients] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const { isAuthenticated } = useContext(Context);
-
   // Fetch archived patients from the API
   useEffect(() => {
     const fetchArchivedPatients = async () => {
       try {
         const { data } = await axios.get(
-          "https://hmscore1-backend.vercel.app/api/v1/archivedPatients",
+          `${apiBaseURL}/api/v1/archivedPatients`,
           { withCredentials: true }
         );
         setArchivedPatients(data.archivedPatients); // Set archived patients in state
@@ -29,7 +29,7 @@ const PatientsArchive = () => {
   }, []); // Empty dependency array means it runs once after the component mounts
 
   // If not authenticated, redirect to login
-  if (!isAuthenticated) {
+  if (isAuthenticated()) {
     return <Navigate to="/login" />;
   }
 
