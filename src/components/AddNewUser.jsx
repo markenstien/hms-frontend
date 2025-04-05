@@ -62,8 +62,6 @@ const AddNewUser = () => {
       formData.append("userAccess", userAccess);
       formData.append("userPosition", userPosition);
       formData.append("docAvatar", docAvatar);
-      formData.append("doctorDepartment", '');
-
       formData.forEach((value,key) => {
         console.log([
             key,value
